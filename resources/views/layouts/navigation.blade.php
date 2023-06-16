@@ -15,15 +15,19 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Painel Principal') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('servidores')" :active="request()->routeIs('servidores')">
-                        {{ __('Servidor') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('portarias')" :active="request()->routeIs('portarias')">
-                        {{ __('Portarias') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('gestores')" :active="request()->routeIs('gestores')">
-                        {{ __('Gestor') }}
-                    </x-nav-link>
+                    @can('acesso-restrito-servidor')
+                        <x-nav-link :href="route('servidores')" :active="request()->routeIs('servidores')">
+                            {{ __('Servidor') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('portarias')" :active="request()->routeIs('portarias')">
+                            {{ __('Portarias') }}
+                        </x-nav-link>
+                        @can('acesso-permitido-admin')
+                            <x-nav-link :href="route('gestores')" :active="request()->routeIs('gestores')">
+                                {{ __('Gestor') }}
+                            </x-nav-link>
+                        @endcan
+                    @endcan
                 </div>
             </div>
 
@@ -75,11 +79,6 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
@@ -89,9 +88,22 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Painel Principal') }}
                 </x-responsive-nav-link>
+                @can('acesso-restrito-servidor')
+                    <x-responsive-nav-link :href="route('servidores')" :active="request()->routeIs('servidores')">
+                        {{ __('Servidor') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('portarias')" :active="request()->routeIs('portarias')">
+                        {{ __('Portarias') }}
+                    </x-responsive-nav-link>
+                    @can('acesso-permitido-admin')
+                        <x-responsive-nav-link :href="route('gestores')" :active="request()->routeIs('gestores')">
+                            {{ __('Gestor') }}
+                        </x-responsive-nav-link>
+                    @endcan
+                @endcan
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
