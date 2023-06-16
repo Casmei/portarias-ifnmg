@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
 class ServidorController extends Controller
@@ -18,9 +19,9 @@ class ServidorController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
+    public function create():View
+    {   
+        return view('servidor.create');
     }
 
     /**
@@ -28,7 +29,8 @@ class ServidorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //TODO: Salvar servidor no banco de dados
+        return redirect()->route('servidores');
     }
 
     /**
