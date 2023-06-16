@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 
@@ -13,6 +14,8 @@ class PortariaController extends Controller
      */
     public function index(): View
     {
+        Gate::authorize('acesso-restrito-servidor');
+
         return view('portaria.index');
     }
 
