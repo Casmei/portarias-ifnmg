@@ -25,6 +25,23 @@ class ServidorController extends Controller
     }
 
     /**
+     * Show the form for upload a file.
+     */
+    public function renderUpload(): View
+    {
+        return view('servidor.upload');
+    }
+
+    /**
+     * Show the form for upload a file.
+     */
+    public function uploadServer()
+    {
+        return redirect()->route('servidores');
+    }
+
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
