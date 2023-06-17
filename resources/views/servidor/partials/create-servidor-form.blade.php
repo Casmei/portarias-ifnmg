@@ -30,8 +30,21 @@
             <!-- <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" /> -->
         </div>
 
-            <!-- TODO: Input do cargo -->
+        <div>
+            <x-input-label for="email" :value="__('Matrícula do Siapi')" />
+            <x-text-input id="email" name="email" type="text" class="mt-1 block w-full" placeholder="maria@email.com" />
+            <!-- <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" /> -->
+        </div>
 
+        <div>
+            <x-input-label for="cargo" :value="__('Cargo')" />
+            <select id="cargo" class="mt-1  block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-gray-700">
+                <option selected>Escolha o Cargo</option>
+                <option value="">Professor</option>
+                <option value="">Coordenador</option>
+                <option value="">Reitor</option>
+            </select>
+        </div>
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Salvar') }}</x-primary-button>
