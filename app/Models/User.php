@@ -53,6 +53,16 @@ class User extends Authenticatable
      */
     public function role()
     {
-        return $this->belongsTo(Role::class, 'role_id');
+        return $this->hasOne(Role::class, 'role_id');
+    }
+
+    /**
+     * Get the position associated with the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function position()
+    {
+        return $this->hasOne(Position::class, 'position_id');
     }
 }
