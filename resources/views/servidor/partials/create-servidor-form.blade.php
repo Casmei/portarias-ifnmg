@@ -38,11 +38,11 @@
 
         <div>
             <x-input-label for="cargo" :value="__('Cargo')" />
-            <select id="cargo" class="mt-1  block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-gray-700">
+            <select id="cargo" name="position_id" class="mt-1  block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-gray-700">
                 <option selected>Escolha o Cargo</option>
-                <option value="">Professor</option>
-                <option value="">Coordenador</option>
-                <option value="">Reitor</option>
+                @foreach ($positions as $position)
+                    <option value="{{ $position->id }}">{{ $position->name }}</option>
+                @endforeach
             </select>
         </div>
 
