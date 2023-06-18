@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Rotas Públicas
 |--------------------------------------------------------------------------
-*/ 
+*/
 Route::get('/', function () {
     return view('welcome');
 });
@@ -37,7 +37,7 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 | SERVIDORES
 |--------------------------------------------------------------------------
-*/ 
+*/
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -52,7 +52,7 @@ Route::get('/dashboard', function () {
 |--------------------------------------------------------------------------
 | GESTORES
 |--------------------------------------------------------------------------
-*/ 
+*/
 Route::get('/portarias', [PortariaController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('portarias');

@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Position;
+use App\Models\Role;
+use App\Models\User;
+use App\Notifications\ServerCredentialsNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ServidorController extends Controller
@@ -48,7 +52,18 @@ class ServidorController extends Controller
      */
     public function store(Request $request)
     {
-        //TODO: Salvar servidor no banco de dados
+        $password = Str::random(10); // Gera uma senha aleatória de 10 caracteres
+
+        $server = new User();
+        $server->name = $request->input('name');
+        $server->email = $request->input('email');
+        $server->cpf = $request->input('cpf');
+        $server->password = Hash::make($password);
+        $server->position_id = $request->input('position_id');
+        $server->save();
+
+        $server->notify(new ServerCredentialsNotification($server, $password));
+
         return redirect()->route('servidores');
     }
 

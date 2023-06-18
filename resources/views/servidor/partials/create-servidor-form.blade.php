@@ -13,7 +13,7 @@
         @csrf
         <div>
             <x-input-label for="servidor-name" :value="__('Nome do Servidor')" />
-            <x-text-input id="servidor-name" name="servidor-name" type="text" placeholder="Ex: Maria" class="mt-1 block w-full"/>
+            <x-text-input id="servidor-name" name="name" type="text" placeholder="Ex: Maria" class="mt-1 block w-full"/>
             <!-- TODO: Definir melhor a mensagem de erro! -->
             <!-- <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" /> -->
         </div>
@@ -32,7 +32,7 @@
 
         <div>
             <x-input-label for="email" :value="__('Matrícula do Siapi')" />
-            <x-text-input id="email" name="email" type="text" class="mt-1 block w-full" placeholder="maria@email.com" />
+            <x-text-input id="email" name="" type="text" class="mt-1 block w-full" placeholder="maria@email.com" />
             <!-- <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" /> -->
         </div>
 
