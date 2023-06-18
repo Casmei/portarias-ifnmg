@@ -21,6 +21,7 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@admin',
             'password' => Hash::make('admin'),
+            'cpf' => '123.456.789.10',
             'role_id' => $role->id,
         ]);
     }
