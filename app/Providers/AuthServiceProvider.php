@@ -25,7 +25,7 @@ class AuthServiceProvider extends ServiceProvider
     {
 
         $this->registerPolicies();
-        
+
         Gate::define('acesso-restrito-servidor', function(User $user){
             return $user->role_id !== UserRole::SERVIDOR;
         });
@@ -33,5 +33,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('acesso-permitido-admin', function(User $user){
             return $user->role_id === UserRole::ADMIN;
         });
-    } 
+
+        Gate::define('senha-atualizada', function(User $user){
+            return $user->password_changed !== 1;
+        });
+    }
 }
