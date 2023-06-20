@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
 use App\Jobs\SendEmailJob;
 use App\Models\Position;
 use App\Models\Role;
 use App\Models\User;
 use App\Notifications\ServerCredentialsNotification;
+use Spatie\SimpleExcel\SimpleExcelReader;
+use League\Csv\Reader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -19,7 +22,8 @@ class ServidorController extends Controller
      */
     public function index():View
     {
-        return view('servidor.index');
+        $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
+        return view('servidor.index', ['servidores' => $servidores]);
     }
 
     /**
@@ -40,10 +44,32 @@ class ServidorController extends Controller
     }
 
     /**
-     * Show the form for upload a file.
+     * Upload data on database
      */
-    public function uploadServer()
+    public function uploadServer(Request $request)
     {
+        if ($request->hasFile('csv_file')) {
+            $file = $request->file('csv_file');
+            $path = $file->store('csv_files');
+
+            $csv = Reader::createFromPath(storage_path('app/' . $path), 'r');
+            $csv->setHeaderOffset(0);
+
+            foreach ($csv as $row) {
+                $password = Str::random(10);
+
+                $server = new User();
+                $server->name = $row['name'];
+                $server->email = $row['email'];
+                $server->cpf = $row['cpf'];
+                $server->password = Hash::make($password);
+                $server->position_id = $row['position_id'];
+                $server->save();
+
+                SendEmailJob::dispatch($server, $password);
+            }
+        }
+
         return redirect()->route('servidores');
     }
 
@@ -81,7 +107,14 @@ class ServidorController extends Controller
      */
     public function edit(string $id)
     {
-        return view('servidor.edit');
+
+        $servidor = User::where('id', $id)->first();
+        $positions = Position::all();
+
+        return view('servidor.edit', [
+            'servidor' => $servidor,
+            'positions' => $positions
+        ]);
     }
 
     /**
