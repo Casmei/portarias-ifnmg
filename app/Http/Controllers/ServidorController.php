@@ -22,7 +22,7 @@ class ServidorController extends Controller
      */
     public function index():View
     {
-        $servidores = User::where('role_id', UserRole::SERVIDOR)->get();
+        $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
         return view('servidor.index', ['servidores' => $servidores]);
     }
 
@@ -107,7 +107,14 @@ class ServidorController extends Controller
      */
     public function edit(string $id)
     {
-        return view('servidor.edit');
+
+        $servidor = User::where('id', $id)->first();
+        $positions = Position::all();
+
+        return view('servidor.edit', [
+            'servidor' => $servidor,
+            'positions' => $positions
+        ]);
     }
 
     /**

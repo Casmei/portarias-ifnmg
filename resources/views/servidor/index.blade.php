@@ -49,32 +49,34 @@
                                     <th scope="col" class="px-6 py-4">CPF</th>
                                     <th scope="col" class="px-6 py-4">Email</th>
                                     <th scope="col" class="px-6 py-4">SIAPI</th>
+                                    <th scope="col" class="px-6 py-4">AÇÕES</th>
                                 </tr>
                             </thead>
                             <tbody>
+
+                            @foreach ( $servidores as $servidor )
                                 <tr class="border-b border-gray-100">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">Maria Francisca da Silva Josefina de Jesus</td>
-                                    <td class="whitespace-nowrap px-6 py-4">123456789-0</td>
-                                    <td class="whitespace-nowrap px-6 py-4">francisquinha.vdl@email.com</td>
+                                    <td class="whitespace-nowrap px-6 py-4 font-medium">{{ $servidor->name }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4">{{ $servidor->cpf }}</td>
+                                    <td class="whitespace-nowrap px-6 py-4">{{ $servidor->email}}</td>
                                     <td class="whitespace-nowrap px-6 py-4">1234.65-789</td>
                                     <a href="">
                                         <td class="whitespace-nowrap px-6 py-4">
-                                            <x-secondary-button>
-                                                <x-icon-edit></x-input-edit>
-                                            </x-secondary-button>
+                                            <a href="{{ url('servidores/'.$servidor->id.'/editar') }}">
+                                                <x-icon-edit />
+                                            </a>
                                         </td>
                                     </a>
 
                                 </tr>
-                                <tr class="border-b border-gray-100">
-                                    <td class="whitespace-nowrap px-6 py-4 font-medium">Jose da Silva Ferreira</td>
-                                    <td class="whitespace-nowrap px-6 py-4">123456789-0</td>
-                                    <td class="whitespace-nowrap px-6 py-4">jose@email.com</td>
-                                </tr>
+                            @endforeach
                             </tbody>
                             </table>
                         </div>
-                        </div>
+                        <footer class="mt-10">
+                            {{ $servidores->links() }}
+                        </footer>
+                    </div>
                     </div>
                 </div>
             </div>
