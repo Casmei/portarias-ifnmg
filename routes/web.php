@@ -69,6 +69,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/upload', [ServidorController::class, 'renderUpload'])->name('servidores.upload');
         Route::post('/upload', [ServidorController::class, 'uploadServer'])->name('servidores.upload');
 
+        Route::get('/{id}/editar', [ServidorController::class, 'edit'])->name('servidores.edit');
+        Route::patch('/{id}/editar', [ServidorController::class, 'update'])->name('servidores.update');
     });
 });
 
