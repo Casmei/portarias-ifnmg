@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmailJob;
 use App\Models\Position;
 use App\Models\Role;
 use App\Models\User;
@@ -62,7 +63,7 @@ class ServidorController extends Controller
         $server->position_id = $request->input('position_id');
         $server->save();
 
-        $server->notify(new ServerCredentialsNotification($server, $password));
+        SendEmailJob::dispatch($server, $password);
 
         return redirect()->route('servidores');
     }
