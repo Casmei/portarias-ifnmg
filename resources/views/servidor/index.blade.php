@@ -57,6 +57,13 @@
                                     <td class="whitespace-nowrap px-6 py-4">123456789-0</td>
                                     <td class="whitespace-nowrap px-6 py-4">francisquinha.vdl@email.com</td>
                                     <td class="whitespace-nowrap px-6 py-4">1234.65-789</td>
+                                    <a href="">
+                                        <td class="whitespace-nowrap px-6 py-4">
+                                            <x-secondary-button>
+                                                <x-icon-edit></x-input-edit>
+                                            </x-secondary-button>
+                                        </td>
+                                    </a>
 
                                 </tr>
                                 <tr class="border-b border-gray-100">
