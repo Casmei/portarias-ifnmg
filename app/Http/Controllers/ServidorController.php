@@ -73,13 +73,32 @@ class ServidorController extends Controller
         return redirect()->route('servidores');
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $password = Str::random(10); // Gera uma senha aleatória de 10 caracteres
+
+        $request->validate(
+            [
+                'name'  => 'required|string',
+                'email'  => 'required|email',
+                'cpf' => 'required|string',
+                'position_id' => 'required|numeric'
+
+
+            ],
+            [
+                'name.required' => 'Campo nome é obrigatório',
+                'email.email' => 'Necessário um email válido',
+                'email.required' => 'Campo email é obrigatório',
+                'cpf.required' => 'Campo cpf é obrigatório',
+                'position_id.numeric' => 'Selecione o cargo!'
+
+            ]
+        );
+
+        $password = Str::random(10);
 
         $server = new User();
         $server->name = $request->input('name');
@@ -122,7 +141,26 @@ class ServidorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate(
+            [
+                'name'  => 'required|string',
+                'email'  => 'required|email',
+                'cpf' => 'required|string',
+                'position_id' => 'required|numeric'
+
+
+            ],
+            [
+                'name.required' => 'Campo nome é obrigatório',
+                'email.email' => 'Necessário um email válido',
+                'email.required' => 'Campo email é obrigatório',
+                'cpf.required' => 'Campo cpf é obrigatório',
+                'position_id.numeric' => 'Selecione o cargo!'
+
+            ]
+        );
+        return redirect()->route('servidores');
+
     }
 
     /**
