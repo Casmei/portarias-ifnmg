@@ -29,6 +29,9 @@
 
             <!-- Page Content -->
             <main>
+                @can('senha-atualizada')
+                    <x-changed-password name="change-password" :show="true" />
+                @endcan
                 {{ $slot }}
             </main>
         </div>
