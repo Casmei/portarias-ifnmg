@@ -70,13 +70,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/upload', [ServidorController::class, 'uploadServer'])->name('servidores.upload');
 
         Route::get('/{id}/editar', [ServidorController::class, 'edit'])->name('servidores.edit');
-        Route::patch('/{id}/editar', [ServidorController::class, 'update'])->name('servidores.update');
+        Route::post('/{id}/editar', [ServidorController::class, 'update'])->name('servidores.update');
     });
 });
-
-//TODO: Listar todos os servidores cadastrados no sistema
-//TODO: Salvar novos servidores por meio de um formulário
-//TODO: Salvar novos servidores por meio de um arquivo CSV
 
 /*
 |--------------------------------------------------------------------------
