@@ -74,10 +74,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-//TODO: Listar todos os servidores cadastrados no sistema
-//TODO: Salvar novos servidores por meio de um formulário
-//TODO: Salvar novos servidores por meio de um arquivo CSV
-
 /*
 |--------------------------------------------------------------------------
 | ADMINISTRADORES
