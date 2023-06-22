@@ -9,8 +9,9 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('servidores.store') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('servidores.update', ['id' => $servidor->id]) }}" class="mt-6 space-y-6">
         @csrf
+        @method('PUT')
         <div>
             <x-input-label for="servidor-name" :value="__('Nome do Servidor')" />
             <x-text-input id="servidor-name" name="name" type="text" :value="old('name', $servidor->name)" class="mt-1 block w-full"/>

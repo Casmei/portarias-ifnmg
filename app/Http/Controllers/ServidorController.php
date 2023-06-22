@@ -122,7 +122,23 @@ class ServidorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'cpf' => 'required',
+            'email' => 'required',
+            'position_id' => 'required',
+        ]);
+
+        $newData = User::find($id);
+
+        $newData->name = $request->input('name');
+        $newData->cpf = $request->input('cpf');
+        $newData->email = $request->input('email');
+        $newData->position_id = $request->input('position_id');
+
+        $newData->save();
+
+        return redirect()->route('servidores')->with('success', 'Usuário atualizado com sucesso!');
     }
 
     /**
