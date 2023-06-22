@@ -15,25 +15,25 @@
         <div>
             <x-input-label for="servidor-name" :value="__('Nome do Servidor')" />
             <x-text-input id="servidor-name" name="name" type="text" :value="old('name', $servidor->name)" class="mt-1 block w-full"/>
-            <!-- <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" /> -->
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <div>
             <x-input-label for="cpf" :value="__('CPF')" />
-            <x-text-input id="cpf" name="cpf" type="text" :value="old('name', $servidor->cpf)" class="mt-1 block w-full" />
-            <!-- <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" /> -->
+            <x-text-input id="cpf" name="cpf" type="text" :value="old('cpf', $servidor->cpf)" class="mt-1 block w-full" />
+            <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
         </div>
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('name', $servidor->email)" />
-            <!-- <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" /> -->
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $servidor->email)" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <div>
             <x-input-label for="email" :value="__('Matrícula do Siapi')" />
             <x-text-input id="email" name="" type="text" class="mt-1 block w-full" value="teste" />
-            <!-- <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" /> -->
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
         <div>
@@ -46,8 +46,8 @@
                     </option>
                 @endforeach
             </select>
+            <x-input-error :messages="$errors->get('position_id')" class="mt-2" />
         </div>
-
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Editar') }}</x-primary-button>
