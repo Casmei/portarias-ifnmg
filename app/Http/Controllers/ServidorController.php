@@ -141,14 +141,12 @@ class ServidorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate(
+        $validatedData = $request->validate(
             [
-                'name'  => 'required|string',
-                'email'  => 'required|email',
+                'name' => 'required|string',
+                'email' => 'required|email',
                 'cpf' => 'required|string',
                 'position_id' => 'required|numeric'
-
-
             ],
             [
                 'name.required' => 'Campo nome é obrigatório',
@@ -156,11 +154,19 @@ class ServidorController extends Controller
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
                 'position_id.numeric' => 'Selecione o cargo!'
-
             ]
         );
-        return redirect()->route('servidores');
 
+        $newData = User::find($id);
+
+        $newData->name = $validatedData['name'];
+        $newData->cpf = $validatedData['cpf'];
+        $newData->email = $validatedData['email'];
+        $newData->position_id = $validatedData['position_id'];
+
+        $newData->save();
+
+        return redirect()->route('servidores');
     }
 
     /**
