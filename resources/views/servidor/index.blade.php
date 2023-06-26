@@ -60,14 +60,12 @@
                                     <td class="whitespace-nowrap px-6 py-4">{{ $servidor->cpf }}</td>
                                     <td class="whitespace-nowrap px-6 py-4">{{ $servidor->email}}</td>
                                     <td class="whitespace-nowrap px-6 py-4">1234.65-789</td>
-                                    <a href="">
-                                        <td class="whitespace-nowrap px-6 py-4">
-                                            <a href="{{ url('servidores/'.$servidor->id.'/editar') }}">
-                                                <x-icon-edit />
-                                            </a>
-                                        </td>
-                                    </a>
-
+                                    <td class="whitespace-nowrap flex px-6 py-4 space-x-6">
+                                        <a href="{{ url('servidores/'.$servidor->id.'/editar') }}">
+                                            <x-icon-edit />
+                                        </a>
+                                        <livewire:delete-modal :serverName="$servidor->name" :serverId="$servidor->id" />
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
