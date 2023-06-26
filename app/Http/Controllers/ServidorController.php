@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\UserRole;
 use App\Jobs\SendEmailJob;
 use App\Models\Position;
-use App\Models\Role;
 use App\Models\User;
-use App\Notifications\ServerCredentialsNotification;
-use Spatie\SimpleExcel\SimpleExcelReader;
 use League\Csv\Reader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -172,8 +169,17 @@ class ServidorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        $servidor = User::findOrFail($id);
+
+        if ($request->input('server-name') !== $servidor->name) {
+            return redirect()->route('servidores');
+        }
+
+
+        $servidor->delete();
+
+        return redirect()->route('servidores');
     }
 }
