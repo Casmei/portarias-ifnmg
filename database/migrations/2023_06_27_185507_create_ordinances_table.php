@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('ordinance_number');
             $table->date('initial_date');
             $table->date('finish_date');
-            $table->integer('members_ordinances_id');
+            $table->integer('members_ordinances_id')->nullable();
             $table->string('campus_or_rectory');
             $table->string('description');
             $table->boolean('visibility');
