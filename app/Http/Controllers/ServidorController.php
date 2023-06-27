@@ -21,8 +21,26 @@ class ServidorController extends Controller
     {
         $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
         return view('servidor.index', ['servidores' => $servidores]);
+        
     }
 
+      /**
+     * Search Name the specified resource from storage.
+     */
+    public function searchName()
+    {
+  
+        $search = request('search');
+        if($search){
+            $servidores = User::where([
+                ['name','like','%'.$search.'%']
+            ])->get();
+            return view('servidor.index', ['servidores' => $servidores,'search' => $search]);
+        }else{
+            $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
+            return view('servidor.index', ['servidores' => $servidores]);
+        } 
+    }
     /**
      * Show the form for creating a new resource.
      */
