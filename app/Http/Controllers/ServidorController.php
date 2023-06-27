@@ -22,17 +22,17 @@ class ServidorController extends Controller
      */
     public function index():View
     {
-            $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
-            return view('servidor.index', ['servidores' => $servidores]);
+        $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
+        return view('servidor.index', ['servidores' => $servidores]);
         
     }
 
       /**
-     * Search the specified resource from storage.
+     * Search Name the specified resource from storage.
      */
-    public function search()
+    public function searchName()
     {
-        
+  
         $search = request('search');
         if($search){
             $servidores = User::where([
@@ -84,7 +84,7 @@ class ServidorController extends Controller
                 $server->position_id = $row['position_id'];
                 $server->save();
 
-                // SendEmailJob::dispatch($server, $password);
+                SendEmailJob::dispatch($server, $password);
             }
         }
 
@@ -150,6 +150,4 @@ class ServidorController extends Controller
     {
         //
     }
-  
-  
 }
