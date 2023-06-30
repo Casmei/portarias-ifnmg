@@ -15,14 +15,20 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::where('id', UserRole::ADMIN)->first();
-
         ModelsUser::create([
             'name' => 'admin',
             'email' => 'admin@admin',
             'password' => Hash::make('admin'),
             'cpf' => '123.456.789.10',
-            'role_id' => $role->id,
+            'role_id' => UserRole::ADMIN,
+        ]);
+
+        ModelsUser::create([
+            'name' => 'Tiago de Castro Lima',
+            'email' => 'casmei@protonmail.com',
+            'password' => Hash::make('admin'),
+            'cpf' => '123.456.739.10',
+            'role_id' => UserRole::SERVIDOR,
         ]);
     }
 }

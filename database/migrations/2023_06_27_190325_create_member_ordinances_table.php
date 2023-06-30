@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('member_ordinances', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('ordinance_id');
+            $table->integer('ordinance_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
-            $table->foreign('ordinance_id')->references('id')->on('ordinance')->onDelete('CASCADE');
+            $table->foreign('ordinance_id')->references('id')->on('ordinances')->onDelete('CASCADE');
         });
     }
 
@@ -29,4 +29,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('member_ordinances');
     }
+
 };
