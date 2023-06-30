@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Position::class, 'position_id');
     }
+
+    public function member_ordinance()
+    {
+        return $this->belongsTo(MemberOrdinance::class, 'user_id');
+    }
 }
