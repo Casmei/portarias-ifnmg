@@ -43,6 +43,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/adicionar', [OrdinanceController::class, 'create'])->name('ordinance.create');
         Route::post('/adicionar', [ServidorController::class, 'store'])->name('ordinance.store');
+
+        Route::get('/{id}/editar', [OrdinanceController::class, 'edit'])->name('ordinance.edit');
+        Route::put('/{id}', [OrdinanceController::class, 'update'])->name('ordinance.update');
     });
 });
 
