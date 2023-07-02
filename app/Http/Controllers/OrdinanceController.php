@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
+use App\Models\Ordinance;
 
 
 class OrdinanceController extends Controller
@@ -48,7 +49,15 @@ class OrdinanceController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $portaria = Ordinance::where('id', $id)->first();
+        // $positions = Position::all();
+
+        // return view('ordinance.edit', compact('portaria'));
+
+        return view('portaria.edit', [
+            'portaria' => $portaria,
+            // 'positions' => $positions
+        ]);
     }
 
     /**
