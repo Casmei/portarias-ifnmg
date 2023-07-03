@@ -21,7 +21,7 @@ class ServidorController extends Controller
     {
         $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
         return view('servidor.index', ['servidores' => $servidores]);
-        
+
     }
 
       /**
@@ -29,7 +29,7 @@ class ServidorController extends Controller
      */
     public function searchName()
     {
-  
+
         $search = request('search');
         if($search){
             $servidores = User::where([
@@ -39,7 +39,7 @@ class ServidorController extends Controller
         }else{
             $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
             return view('servidor.index', ['servidores' => $servidores]);
-        } 
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -81,7 +81,7 @@ class ServidorController extends Controller
                 $server->position_id = $row['position_id'];
                 $server->save();
 
-                SendEmailJob::dispatch($server, $password);
+                // SendEmailJob::dispatch($server, $password);
             }
         }
 

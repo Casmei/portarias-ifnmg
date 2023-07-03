@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <script src="https://unpkg.com/mistral-ui@1.x.x/dist/cdn.min.js"></script>
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -13,6 +14,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script defer src="https://unpkg.com/mistral-ui@1.x.x/dist/cdn.min.js"></script>
 
         <livewire:styles />
     </head>
@@ -37,6 +39,14 @@
                 {{ $slot }}
             </main>
         </div>
-        <livewire:scripts />
+            <livewire:scripts />
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('multiselect', Mistral.multiselect)
+        })
+    </script>
+
+
     </body>
 </html>

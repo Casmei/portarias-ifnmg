@@ -66,4 +66,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Position::class, 'position_id');
     }
+
+    public function ordinances() {
+        return $this->belongsToMany(Ordinance::class);
+    }
 }

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserRole;
+use App\Models\MemberOrdinance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use App\Models\Ordinance;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class OrdinanceController extends Controller
 {
@@ -25,7 +28,8 @@ class OrdinanceController extends Controller
      */
     public function create()
     {
-        return view('portaria.create');
+        $servidores = User::where('role_id', UserRole::SERVIDOR)->get();
+        return view('portaria.create', ['servidores' => $servidores]);
     }
 
     /**
@@ -33,8 +37,23 @@ class OrdinanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $ordinance = new Ordinance();
+        $ordinance->ordinance_number = $request->input('ordinance_number');
+        $ordinance->start_date = $request->input('start_date');
+        $ordinance->end_date = $request->input('end_date');
+        $ordinance->campus = $request->input('campus');
+        $ordinance->description = $request->input('description');
+        $ordinance->pdf_url = 'portarias';
+        $ordinance->visibility = true;
+        $ordinance->save();
+
+        $servidores = $request->input('servidores');
+        $ordinance->users()->sync($servidores);
+        return redirect()->route('ordinance');
     }
+
+
+
 
     /**
      * Display the specified resource.

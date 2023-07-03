@@ -14,15 +14,18 @@ return new class extends Migration
         Schema::create('ordinances', function (Blueprint $table) {
             $table->id();
             $table->integer('ordinance_number');
-            $table->date('initial_date');
-            $table->date('finish_date');
-            $table->integer('members_ordinances_id')->nullable();
-            $table->string('campus_or_rectory');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('campus');
             $table->string('description');
+            $table->string('pdf_url')->nullable()->after('description');
             $table->boolean('visibility');
             $table->timestamps();
+        });
 
-            $table->foreign('members_ordinances_id')->references('id')->on('member_ordinances')->onDelete('CASCADE');
+        Schema::create('ordinance_user', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('ordinance_id')->constrained()->nullable();
         });
     }
 
@@ -31,6 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('ordinance_user');
         Schema::dropIfExists('ordinances');
     }
 };
