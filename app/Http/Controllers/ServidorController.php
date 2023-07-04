@@ -21,7 +21,7 @@ class ServidorController extends Controller
     {
         $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
         return view('servidor.index', ['servidores' => $servidores]);
-        
+
     }
 
       /**
@@ -29,7 +29,7 @@ class ServidorController extends Controller
      */
     public function searchName()
     {
-  
+
         $search = request('search');
         if($search){
             $servidores = User::where([
@@ -39,7 +39,7 @@ class ServidorController extends Controller
         }else{
             $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
             return view('servidor.index', ['servidores' => $servidores]);
-        } 
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -131,10 +131,18 @@ class ServidorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function dashboard()
     {
-        //
+        $user = auth()->user();
+        $portarias = null;
+
+        if($user->role_id == UserRole::SERVIDOR) {
+            $portarias = $user->ordinances()->get();
+        }
+
+        return view('dashboard', compact('portarias', 'user'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

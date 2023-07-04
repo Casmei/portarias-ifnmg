@@ -42,10 +42,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [OrdinanceController::class, 'index'])->name('ordinance');
 
         Route::get('/adicionar', [OrdinanceController::class, 'create'])->name('ordinance.create');
-        Route::post('/adicionar', [ServidorController::class, 'store'])->name('ordinance.store');
+        Route::post('/adicionar', [OrdinanceController::class, 'store'])->name('ordinance.store');
 
         Route::get('/{id}/editar', [OrdinanceController::class, 'edit'])->name('ordinance.edit');
         Route::put('/{id}', [OrdinanceController::class, 'update'])->name('ordinance.update');
+
+        Route::get('/{id}/download', [OrdinanceController::class, 'download'])->name('ordinance.download');
+
     });
 });
 
@@ -72,9 +75,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ServidorController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 //TODO: Exibir dados do servidor em formato de dashboard
 //TODO: Fazer download de um relátorio do servidor

@@ -63,7 +63,6 @@
                                             Bem Vindo(a), {{ $server->name }} 🎉</h1>
                                         <p
                                             style="box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; position: relative; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">
-                                            Olá, Tiago de Castro Lima!<br><br>
                                             Seja bem-vindo(a) ao sistema de portarias <strong>Midit</strong>! Sua conta foi criada com sucesso e está pronta para ser acessada!
                                         </p>
 

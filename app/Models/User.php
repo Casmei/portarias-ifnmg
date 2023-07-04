@@ -4,10 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Ordinance;
+
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -65,5 +65,10 @@ class User extends Authenticatable
     public function position()
     {
         return $this->hasOne(Position::class, 'position_id');
+    }
+
+    public function ordinances()
+    {
+        return $this->belongsToMany(Ordinance::class);
     }
 }

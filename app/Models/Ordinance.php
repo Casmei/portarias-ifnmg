@@ -7,15 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ordinance extends Model
 {
+
+    protected $fillable = [
+        'number',
+        'start_date',
+        'end_date',
+        'campus',
+        'description',
+        'visibility',
+        'pdf_url',
+    ];
+
     use HasFactory;
 
-    public function members_ordinance()
+    public function users()
     {
-        return $this->belongsTo(MemberOrdianance::class, 'id');
-    }
-
-    public function members()
-    {
-        return $this->hasOne(MemberOrdinance::class, 'position_id');
+        return $this->belongsToMany(User::class);
     }
 }
