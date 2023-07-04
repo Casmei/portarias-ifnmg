@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ordinances', function (Blueprint $table) {
             $table->id();
-            $table->integer('ordinance_number');
+            $table->integer('number')->unique();
             $table->date('start_date');
             $table->date('end_date');
             $table->string('campus');

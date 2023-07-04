@@ -81,7 +81,7 @@ class ServidorController extends Controller
                 $server->position_id = $row['position_id'];
                 $server->save();
 
-                // SendEmailJob::dispatch($server, $password);
+                SendEmailJob::dispatch($server, $password);
             }
         }
 
@@ -131,10 +131,18 @@ class ServidorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function dashboard()
     {
-        //
+        $user = auth()->user();
+        $portarias = null;
+
+        if($user->role_id == UserRole::SERVIDOR) {
+            $portarias = $user->ordinances()->get();
+        }
+
+        return view('dashboard', compact('portarias', 'user'));
     }
+
 
     /**
      * Show the form for editing the specified resource.

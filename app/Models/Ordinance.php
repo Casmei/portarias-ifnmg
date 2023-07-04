@@ -9,13 +9,13 @@ class Ordinance extends Model
 {
 
     protected $fillable = [
-        'ordinance_number',
+        'number',
         'start_date',
         'end_date',
-        'members_ordinances_id',
         'campus',
         'description',
-        'visibility'
+        'visibility',
+        'pdf_url',
     ];
 
     use HasFactory;
