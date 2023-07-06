@@ -192,6 +192,13 @@ class ServidorController extends Controller
         return redirect()->route('servidores');
     }
 
+
+    public function delete(string $id)
+    {
+        $servidor = User::where('id', $id)->first();
+        return view('servidor.delete', compact('servidor'));
+    }
+
     /**
      * Remove the specified resource from storage.
      */

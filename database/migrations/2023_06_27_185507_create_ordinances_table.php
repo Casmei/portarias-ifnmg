@@ -24,8 +24,8 @@ return new class extends Migration
         });
 
         Schema::create('ordinance_user', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('ordinance_id')->constrained()->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
+            $table->foreignId('ordinance_id')->constrained()->nullable()->onDelete('CASCADE');
         });
     }
 
