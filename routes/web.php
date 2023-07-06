@@ -71,6 +71,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{id}/editar', [ServidorController::class, 'edit'])->name('servidores.edit');
         Route::put('/{id}', [ServidorController::class, 'update'])->name('servidores.update');
 
+        Route::get('/{id}/excluir', [ServidorController::class, 'delete'])->name('servidores.delete');
         Route::delete('/{id}', [ServidorController::class, 'destroy'])->name('servidores.destroy');
     });
 });
