@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Gate;
 
 class ServidorController extends Controller
 {
@@ -19,9 +20,10 @@ class ServidorController extends Controller
      */
     public function index():View
     {
+        Gate::authorize('acesso-restrito-servidor');
         $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
         return view('servidor.index', ['servidores' => $servidores]);
-        
+
     }
 
       /**
@@ -29,7 +31,7 @@ class ServidorController extends Controller
      */
     public function searchName()
     {
-  
+        Gate::authorize('acesso-restrito-servidor');
         $search = request('search');
         if($search){
             $servidores = User::where([
@@ -39,13 +41,14 @@ class ServidorController extends Controller
         }else{
             $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
             return view('servidor.index', ['servidores' => $servidores]);
-        } 
+        }
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create():View
     {
+        Gate::authorize('acesso-restrito-servidor');
         $positions = Position::all();
         return view('servidor.create', ['positions' => $positions]);
     }
@@ -55,6 +58,7 @@ class ServidorController extends Controller
      */
     public function renderUpload(): View
     {
+        Gate::authorize('acesso-restrito-servidor');
         return view('servidor.upload');
     }
 
@@ -63,6 +67,7 @@ class ServidorController extends Controller
      */
     public function uploadServer(Request $request)
     {
+        Gate::authorize('acesso-restrito-servidor');
         if ($request->hasFile('csv_file')) {
             $file = $request->file('csv_file');
             $path = $file->store('csv_files');
@@ -93,7 +98,7 @@ class ServidorController extends Controller
      */
     public function store(Request $request)
     {
-
+        Gate::authorize('acesso-restrito-servidor');
         $request->validate(
             [
                 'name'  => 'required|string',
@@ -131,17 +136,26 @@ class ServidorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function dashboard()
     {
-        //
+        Gate::authorize('acesso-restrito-servidor');
+        $user = auth()->user();
+        $portarias = null;
+
+        if($user->role_id == UserRole::SERVIDOR) {
+            $portarias = $user->ordinances()->get();
+        }
+
+        return view('dashboard', compact('portarias', 'user'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-
+        Gate::authorize('acesso-restrito-servidor');
         $servidor = User::where('id', $id)->first();
         $positions = Position::all();
 
@@ -156,6 +170,7 @@ class ServidorController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        Gate::authorize('acesso-restrito-servidor');
         $validatedData = $request->validate(
             [
                 'name' => 'required|string',
@@ -184,11 +199,19 @@ class ServidorController extends Controller
         return redirect()->route('servidores');
     }
 
+
+    public function delete(string $id)
+    {
+        $servidor = User::where('id', $id)->first();
+        return view('servidor.delete', compact('servidor'));
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, string $id)
     {
+        Gate::authorize('acesso-restrito-servidor');
         $servidor = User::findOrFail($id);
 
         if ($request->input('server-name') !== $servidor->name) {

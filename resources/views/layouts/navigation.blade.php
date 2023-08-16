@@ -19,7 +19,7 @@
                         <x-nav-link :href="route('servidores')" :active="request()->routeIs('servidores')">
                             {{ __('Servidor') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('portarias')" :active="request()->routeIs('portarias')">
+                        <x-nav-link :href="route('ordinance')" :active="request()->routeIs('ordinance')">
                             {{ __('Portarias') }}
                         </x-nav-link>
                         @can('acesso-permitido-admin')
@@ -95,7 +95,7 @@
                     <x-responsive-nav-link :href="route('servidores')" :active="request()->routeIs('servidores')">
                         {{ __('Servidor') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('portarias')" :active="request()->routeIs('portarias')">
+                    <x-responsive-nav-link :href="route('ordinance')" :active="request()->routeIs('ordinance')">
                         {{ __('Portarias') }}
                     </x-responsive-nav-link>
                     @can('acesso-permitido-admin')

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GestorController;
-use App\Http\Controllers\PortariaController;
+use App\Http\Controllers\OrdinanceController;
 use App\Http\Controllers\ServidorController;
 
 
@@ -32,33 +32,31 @@ Route::get('/', function () {
 
 //TODO: Listar todas as portarias de um determinado servidor
 //TODO: Exibir informações básicas de determinada portaria
+/*
+|--------------------------------------------------------------------------
+| PORTARIAS
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('portarias')->group(function () {
+        Route::get('/', [OrdinanceController::class, 'index'])->name('ordinance');
+
+        Route::get('/adicionar', [OrdinanceController::class, 'create'])->name('ordinance.create');
+        Route::post('/adicionar', [OrdinanceController::class, 'store'])->name('ordinance.store');
+
+        Route::get('/{id}/editar', [OrdinanceController::class, 'edit'])->name('ordinance.edit');
+        Route::put('/{id}', [OrdinanceController::class, 'update'])->name('ordinance.update');
+
+        Route::get('/{id}/download', [OrdinanceController::class, 'download'])->name('ordinance.download');
+
+    });
+});
 
 /*
 |--------------------------------------------------------------------------
 | SERVIDORES
 |--------------------------------------------------------------------------
 */
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-//TODO: Exibir dados do servidor em formato de dashboard
-//TODO: Fazer download de um relátorio do servidor
-//TODO: Listagem de todas as portarias que o servidor faz parte (públicas ou privadas)
-//TODO: Visualização completa dos dados de uma portaria
-//TODO: Fazer download do pdf de uma portaria
-
-/*
-|--------------------------------------------------------------------------
-| GESTORES
-|--------------------------------------------------------------------------
-*/
-Route::get('/portarias', [PortariaController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('portarias');
-
-//TODO: Adicionar portaria por meio de um formuário
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('servidores')->group(function () {
         Route::get('/', [ServidorController::class, 'index'])->name('servidores');
@@ -73,9 +71,29 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{id}/editar', [ServidorController::class, 'edit'])->name('servidores.edit');
         Route::put('/{id}', [ServidorController::class, 'update'])->name('servidores.update');
 
+        Route::get('/{id}/excluir', [ServidorController::class, 'delete'])->name('servidores.delete');
         Route::delete('/{id}', [ServidorController::class, 'destroy'])->name('servidores.destroy');
     });
 });
+
+Route::get('/dashboard', [ServidorController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+
+//TODO: Exibir dados do servidor em formato de dashboard
+//TODO: Fazer download de um relátorio do servidor
+//TODO: Listagem de todas as portarias que o servidor faz parte (públicas ou privadas)
+//TODO: Visualização completa dos dados de uma portaria
+//TODO: Fazer download do pdf de uma portaria
+
+/*
+|--------------------------------------------------------------------------
+| GESTORES
+|--------------------------------------------------------------------------
+*/
+
+
+//TODO: Adicionar portaria por meio de um formuário
+
+
 
 /*
 |--------------------------------------------------------------------------
