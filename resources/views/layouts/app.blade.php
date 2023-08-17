@@ -41,6 +41,8 @@
             {{ $slot }}
         </main>
     </div>
+
+
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('multiselect', Mistral.multiselect)

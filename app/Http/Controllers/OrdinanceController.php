@@ -24,7 +24,9 @@ class OrdinanceController extends Controller
         foreach ($portarias as $portaria) {
             $now = Carbon::now();
             $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
-            $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+            if ($portaria->end_date) {
+                $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+            }
 
             if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
                 $portaria->status = true;
@@ -96,10 +98,10 @@ class OrdinanceController extends Controller
     public function store(Request $request)
     {
         Gate::authorize('acesso-restrito-servidor');
+
         $request->validate([
             'ordinance_number' => 'required',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
             'campus' => 'required',
             'description' => 'required',
             'pdf_file' => 'required|mimes:pdf|max:2048',
@@ -108,9 +110,6 @@ class OrdinanceController extends Controller
             'ordinance_number.required' => 'O número da portaria é obrigatório.',
             'start_date.required' => 'A data de início é obrigatória.',
             'start_date.date' => 'A data de início deve ser uma data válida.',
-            'end_date.required' => 'A data de término é obrigatória.',
-            'end_date.date' => 'A data de término deve ser uma data válida.',
-            'end_date.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
             'campus.required' => 'O campus é obrigatório.',
             'description.required' => 'A descrição é obrigatória.',
             'pdf_file.required' => 'O arquivo PDF é obrigatório.',
@@ -120,10 +119,24 @@ class OrdinanceController extends Controller
             'servidores.array' => 'A lista de servidores deve ser um array.',
         ]);
 
+        if (!$request->input('end_date_permanente')) {
+            $request->validate([
+                'end_date' => 'required|date|after_or_equal:start_date',
+            ], [
+                'end_date.required' => 'A data de término é obrigatória.',
+                'end_date.date' => 'A data de término deve ser uma data válida.',
+                'end_date.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
+            ]);
+        }
+
         $ordinance = new Ordinance();
         $ordinance->number = $request->input('ordinance_number');
         $ordinance->start_date = $request->input('start_date');
-        $ordinance->end_date = $request->input('end_date');
+        $ordinance->end_date = null;
+
+        if (!$request->input('end_date_permanente')) {
+            $ordinance->end_date = $request->input('end_date');
+        }
         $ordinance->campus = $request->input('campus');
         $ordinance->description = $request->input('description');
 
