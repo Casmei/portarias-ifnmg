@@ -36,6 +36,49 @@ class OrdinanceController extends Controller
         return view('portaria.index', compact('portarias'));
     }
 
+    /**
+     * Search Name the specified resource from storage.
+     */
+    public function searchName()
+    {
+        Gate::authorize('acesso-restrito-servidor');
+
+        $search = request('search');
+
+        if($search){
+            $portarias = Ordinance::where([
+                ['number','like','%'.$search.'%']
+            ])->get();
+
+            foreach ($portarias as $portaria) {
+                $now = Carbon::now();
+                $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
+                $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+
+                if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
+                    $portaria->status = true;
+                } else {
+                    $portaria->status = false;
+                }
+            }
+
+            return view('portaria.index', ['portarias' => $portarias,'search' => $search]);
+        }else{
+            $portarias = Ordinance::paginate(10);
+            foreach ($portarias as $portaria) {
+                $now = Carbon::now();
+                $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
+                $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+
+                if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
+                    $portaria->status = true;
+                } else {
+                    $portaria->status = false;
+                }
+            }
+            return view('portaria.index', ['portarias' => $portarias]);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
