@@ -1,3 +1,3 @@
-<h1 class="font-mono text-2xl font-semibold whitespace-nowrap ">
+<h1 class="font-mono text-3xl font-semibold whitespace-nowrap ">
     midit
 </h1>
