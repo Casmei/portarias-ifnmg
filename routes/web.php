@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GestorController;
 use App\Http\Controllers\OrdinanceController;
 use App\Http\Controllers\ServidorController;
+use App\Http\Controllers\MemberOrdinanceController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -26,9 +27,7 @@ use Illuminate\Support\Facades\Route;
 | Rotas Públicas
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [MemberOrdinanceController::class, 'index'])->name('welcome');
 
 //TODO: Listar todas as portarias de um determinado servidor
 //TODO: Exibir informações básicas de determinada portaria

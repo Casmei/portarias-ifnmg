@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Ordinance;
+use App\Models\MemberOrdinance;
 
 use Laravel\Sanctum\HasApiTokens;
 
@@ -67,8 +68,8 @@ class User extends Authenticatable
         return $this->hasOne(Position::class, 'position_id');
     }
 
-    public function ordinances()
+    public function ordinance_user()
     {
-        return $this->belongsToMany(Ordinance::class);
+        return $this->belongsTo(MemberOrdinance::class, 'user_id');
     }
 }

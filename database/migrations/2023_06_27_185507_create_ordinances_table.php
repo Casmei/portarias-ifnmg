@@ -24,8 +24,10 @@ return new class extends Migration
         });
 
         Schema::create('ordinance_user', function (Blueprint $table) {
+            $table->primary(['user_id', 'ordinance_id']);
             $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
             $table->foreignId('ordinance_id')->constrained()->nullable()->onDelete('CASCADE');
+            $table->timestamps();
         });
     }
 
