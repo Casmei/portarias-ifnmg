@@ -109,6 +109,28 @@
                     </div>
                 @endif
             </div>
+            @if ($user->role_id == 3)
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+
+                    <div class="flex justify-between space-x-6">
+                        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                            <p>Portarias Totais</p>
+                            <h1 class="text-6xl mt-2 font-bold">{{ $totalPortarias }}</h1>
+                        </div>
+                        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                            <p>Portarias Ativas</p>
+                            <h1 class="text-6xl mt-2 font-bold">{{ $porcentagemAtivas }}%</h1>
+                        </div>
+                        <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                            <p>Portarias Finalizadas</p>
+                            <h1 class="text-6xl mt-2 font-bold">{{ $porcentagemFinalizadas }}%</h1>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
 </x-app-layout>
