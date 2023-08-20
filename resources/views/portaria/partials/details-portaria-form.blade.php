@@ -1,12 +1,8 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Detalhes da Portaria') }}
+            {{ __('Informações sobre a portaria') }}
         </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Informações sobre a portaria.') }}
-        </p>
     </header>
 
     <div class="space-y-5 mt-10">

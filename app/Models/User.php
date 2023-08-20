@@ -68,6 +68,11 @@ class User extends Authenticatable
         return $this->hasOne(Position::class, 'position_id');
     }
 
+    public function ordinances()
+    {
+        return $this->hasMany(MemberOrdinance::class);
+    }
+
     public function ordinance_user()
     {
         return $this->belongsTo(MemberOrdinance::class, 'user_id');
