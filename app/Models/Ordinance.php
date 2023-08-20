@@ -22,6 +22,6 @@ class Ordinance extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class, MemberOrdinance::class);
+        return $this->belongsToMany(User::class);
     }
 }

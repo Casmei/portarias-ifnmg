@@ -10,6 +10,7 @@ use App\Models\Ordinance;
 use App\Models\User;
 use App\Models\MemberOrdinance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class OrdinanceController extends Controller
@@ -230,8 +231,17 @@ class OrdinanceController extends Controller
     public function details(string $id)
     {
         Gate::authorize('acesso-restrito-servidor');
+
         $portaria = Ordinance::where('id', $id)->first();
-        return view('portaria.details', ['portaria' => $portaria]);
+
+        $servidores = Ordinance::select('ordinances.*')
+            ->join('ordinance_user', 'ordinances.id', '=', 'ordinance_user.ordinance_id')
+            ->with('users')
+            ->where('ordinances.id', $id)
+            ->first()
+        ;
+
+        return view('portaria.details', ['portaria' => $portaria, 'servidores' => $servidores]);
     }
 
 }
