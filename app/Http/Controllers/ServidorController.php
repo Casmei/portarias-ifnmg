@@ -164,8 +164,55 @@ class ServidorController extends Controller
             }
         }
 
+        if($user->role_id == UserRole::ADMIN) {
+            $portarias = Ordinance::all();
+            foreach ($portarias as $portaria) {
+                $now = Carbon::now();
+                $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
+                if ($portaria->end_date) {
+                    $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+                }
 
-        return view('dashboard', compact('portarias', 'user'));
+                if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
+                    $portaria->status = true;
+                } else {
+                    $portaria->status = false;
+                }
+            }
+
+            $portarias = Ordinance::all();
+
+            $totalPortarias = $portarias->count();
+
+            $portariasAtivas = $portarias->filter(function ($portaria) {
+                return now()->lessThan($portaria->end_date);
+            });
+
+            // dd($portariasAtivas);
+
+            $totalAtivas = $portariasAtivas->count();
+            $porcentagemAtivas = ($totalAtivas / $totalPortarias) * 100;
+
+            $portariasFinalizadas = $portarias->filter(function ($portaria) {
+                return $portaria->end_date && now()->greaterThanOrEqualTo($portaria->end_date);
+            });
+
+            $totalFinalizadas = $portariasFinalizadas->count();
+            $porcentagemFinalizadas = ($totalFinalizadas / $totalPortarias) * 100;
+
+            return view('dashboard', [
+                'portarias' => $portarias,
+                'user' => $user,
+                'totalPortarias' => $totalPortarias,
+                'totalAtivas' => $totalAtivas,
+                'porcentagemAtivas' => number_format($porcentagemAtivas, 2),
+                'totalFinalizadas' => $totalFinalizadas,
+                'porcentagemFinalizadas' => number_format($porcentagemFinalizadas, 2),
+            ]);
+        }
+
+
+        // return view('dashboard', compact('portarias', 'user'));
     }
 
 
