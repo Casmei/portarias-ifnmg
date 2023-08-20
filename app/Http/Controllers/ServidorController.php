@@ -166,6 +166,23 @@ class ServidorController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function details(string $id)
+    {
+        Gate::authorize('acesso-restrito-servidor');
+
+        $servidor = User::where('id', $id)->first();
+        $position = Position::where('id', $servidor->position_id)->first();
+
+        return view('servidor.details', [
+            'servidor' => $servidor,
+            'position' => $position
+        ]);
+    }
+
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
