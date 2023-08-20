@@ -30,9 +30,9 @@
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Matrícula do Siapi')" />
-            <x-text-input id="email" name="" type="text" class="mt-1 block w-full" placeholder="maria@email.com" />
-            <x-input-error :messages="$errors->get('siapi')" class="mt-2" />
+            <x-input-label for="siape" :value="__('Matrícula do SIAPE')" />
+            <x-text-input id="siape" name="siape" type="text" class="mt-1 block w-full" placeholder="12345678" />
+            <x-input-error :messages="$errors->get('siape')" class="mt-2" />
         </div>
 
         <div>

@@ -26,7 +26,7 @@
                 <form method="post" action="{{ route('servidores.upload') }}" class="mt-6 space-y-6 " enctype="multipart/form-data">
                     @csrf
                     <label class="block">
-                        <input name="csv_file" type="file" class=" 
+                        <input name="csv_file" type="file" class="
                         block w-full text-sm text-gray-600
                         file:uppercase file:tracking-widest
                         file:mr-4 file:py-2 file:px-4

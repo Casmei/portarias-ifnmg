@@ -84,6 +84,7 @@ class ServidorController extends Controller
                 $server->cpf = $row['cpf'];
                 $server->password = Hash::make($password);
                 $server->position_id = $row['position_id'];
+                $server->siape = $row['siape'];
                 $server->save();
 
                 SendEmailJob::dispatch($server, $password);
@@ -104,6 +105,7 @@ class ServidorController extends Controller
                 'name'  => 'required|string',
                 'email'  => 'required|email',
                 'cpf' => 'required|string',
+                'siape' => 'required|string',
                 'position_id' => 'required|numeric'
 
 
@@ -113,6 +115,7 @@ class ServidorController extends Controller
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
+                'siape.required' => 'Campo siape é obrigatório',
                 'position_id.numeric' => 'Selecione o cargo!'
 
             ]
@@ -126,6 +129,7 @@ class ServidorController extends Controller
         $server->cpf = $request->input('cpf');
         $server->password = Hash::make($password);
         $server->position_id = $request->input('position_id');
+        $server->siape = $request->input('siape');
         $server->save();
 
         SendEmailJob::dispatch($server, $password);
@@ -193,6 +197,7 @@ class ServidorController extends Controller
                 'name' => 'required|string',
                 'email' => 'required|email',
                 'cpf' => 'required|string',
+                'siape' => 'required|string',
                 'position_id' => 'required|numeric'
             ],
             [
@@ -200,6 +205,7 @@ class ServidorController extends Controller
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
+                'siape.required' => 'Campo siape é obrigatorio',
                 'position_id.numeric' => 'Selecione o cargo!'
             ]
         );
@@ -209,6 +215,7 @@ class ServidorController extends Controller
         $newData->name = $validatedData['name'];
         $newData->cpf = $validatedData['cpf'];
         $newData->email = $validatedData['email'];
+        $newData->siape = $validatedData['siape'];
         $newData->position_id = $validatedData['position_id'];
 
         $newData->save();

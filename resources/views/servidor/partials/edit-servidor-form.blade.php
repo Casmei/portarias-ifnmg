@@ -31,8 +31,8 @@
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Matrícula do Siapi')" />
-            <x-text-input id="email" name="" type="text" class="mt-1 block w-full" value="teste" />
+            <x-input-label for="siape" :value="__('Matrícula do SIAPE')" />
+            <x-text-input id="siape" name="siape" type="text" class="mt-1 block w-full" :value="old('siape', $servidor->siape)" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
