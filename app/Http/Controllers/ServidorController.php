@@ -196,20 +196,26 @@ class ServidorController extends Controller
         $portarias = Ordinance::find($servidor->ordinances()->get());
 
         $totalPortarias = $portarias->count();
+        $totalAtivas = 0;
+        $porcentagemAtivas = 0;
+        $totalFinalizadas = 0;
+        $porcentagemFinalizadas = 0;
 
-        $portariasAtivas = $portarias->filter(function ($portaria) {
-            return now()->lessThan($portaria->end_date);
-        });
+        if ($totalPortarias > 0) {
+            $portariasAtivas = $portarias->filter(function ($portaria) {
+                return now()->lessThan($portaria->end_date);
+            });
 
-        $totalAtivas = $portariasAtivas->count();
-        $porcentagemAtivas = ($totalAtivas / $totalPortarias) * 100;
+            $totalAtivas = $portariasAtivas->count();
+            $porcentagemAtivas = ($totalAtivas / $totalPortarias) * 100;
 
-        $portariasFinalizadas = $portarias->filter(function ($portaria) {
-            return $portaria->end_date && now()->greaterThanOrEqualTo($portaria->end_date);
-        });
+            $portariasFinalizadas = $portarias->filter(function ($portaria) {
+                return $portaria->end_date && now()->greaterThanOrEqualTo($portaria->end_date);
+            });
 
-        $totalFinalizadas = $portariasFinalizadas->count();
-        $porcentagemFinalizadas = ($totalFinalizadas / $totalPortarias) * 100;
+            $totalFinalizadas = $portariasFinalizadas->count();
+            $porcentagemFinalizadas = ($totalFinalizadas / $totalPortarias) * 100;
+        }
 
         $position = Position::where('id', $servidor->position_id)->first();
 
@@ -223,6 +229,7 @@ class ServidorController extends Controller
             'porcentagemFinalizadas' => number_format($porcentagemFinalizadas, 2),
         ]);
     }
+
 
 
 
