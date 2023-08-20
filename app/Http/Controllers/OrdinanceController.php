@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use App\Models\Ordinance;
 use App\Models\User;
+use App\Models\MemberOrdinance;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
@@ -155,7 +156,14 @@ class OrdinanceController extends Controller
         $ordinance->save();
 
         $servidores = $request->input('servidores');
-        $ordinance->users()->sync($servidores);
+
+        foreach ($servidores as $servidor) {
+            $portariaParaServidor = MemberOrdinance::create([
+                'user_id' => $servidor,
+                'ordinance_id' => $ordinance->id
+            ]);
+        }
+
         return redirect()->route('ordinance');
     }
 

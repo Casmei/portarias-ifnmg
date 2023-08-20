@@ -9,18 +9,20 @@ class MemberOrdinance extends Model
 {
     use HasFactory;
 
+    protected $table = 'ordinance_user';
+
+    protected $fillable = [
+        'user_id',
+        'ordinance_id'
+    ];
+
     public function user()
     {
-        return $this->hasOne(User::class, 'user_id');
+        return $this->hasMany(User::class, 'user_id');
     }
 
     public function ordinance()
     {
-        return $this->hasOne(Ordinance::class, 'ordinance_id');
-    }
-
-    public function members_ordinance()
-    {
-        return $this->belongsTo(Ordinance::class, 'id');
+        return $this->hasMany(Ordinance::class, 'ordinance_id');
     }
 }
