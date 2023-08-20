@@ -57,7 +57,7 @@
                                             <th scope="col" class="px-6 py-4">Nome</th>
                                             <th scope="col" class="px-6 py-4">CPF</th>
                                             <th scope="col" class="px-6 py-4">Email</th>
-                                            <th scope="col" class="px-6 py-4">SIAPI</th>
+                                            <th scope="col" class="px-6 py-4">SIAPE</th>
                                             <th scope="col" class="px-6 py-4">AÇÕES</th>
                                         </tr>
                                     </thead>
@@ -69,7 +69,7 @@
                                                     {{ $servidor->name }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">{{ $servidor->cpf }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">{{ $servidor->email }}</td>
-                                                <td class="whitespace-nowrap px-6 py-4">1234.65-789</td>
+                                                <td class="whitespace-nowrap px-6 py-4">{{ $servidor->siape }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4 flex space-x-2">
                                                     <a href="{{ url('servidores/' . $servidor->id . '/detalhes') }}"
                                                         class="cursor-pointer flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">

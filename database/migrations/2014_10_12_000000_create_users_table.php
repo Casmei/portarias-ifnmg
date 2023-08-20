@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('cpf')->unique();
             $table->string('password');
             $table->integer('role_id')->default(1);
+            $table->string('siape')->unique()->nullable();
             $table->rememberToken();
             $table->timestamps();
 
