@@ -80,6 +80,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('gestores')->group(function () {
+        Route::get('/', [GestorController::class, 'index'])->name('gestores');
+        Route::get('/buscar',[GestorController::class,'searchName'])->name('gestores.search');
+
+        Route::get('/adicionar', [GestorController::class, 'create'])->name('gestores.create');
+        Route::post('/adicionar', [GestorController::class, 'store'])->name('gestores.store');
+
+        Route::get('/upload', [GestorController::class, 'renderUpload'])->name('gestores.upload');
+        Route::post('/upload', [GestorController::class, 'uploadServer'])->name('gestores.upload');
+
+        Route::get('/{id}/editar', [GestorController::class, 'edit'])->name('gestores.edit');
+        Route::put('/{id}', [GestorController::class, 'update'])->name('gestores.update');
+
+        Route::get('/{id}/excluir', [GestorController::class, 'delete'])->name('gestores.delete');
+        Route::delete('/{id}', [GestorController::class, 'destroy'])->name('gestores.destroy');
+    });
+});
+
 Route::get('/dashboard', [ServidorController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 //TODO: Exibir dados do servidor em formato de dashboard
