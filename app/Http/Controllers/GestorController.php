@@ -48,17 +48,12 @@ class GestorController extends Controller
                 'name'  => 'required|string',
                 'email'  => 'required|email',
                 'cpf' => 'required|string',
-                'position_id' => 'required|numeric'
-
-
             ],
             [
                 'name.required' => 'Campo nome é obrigatório',
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
-                'position_id.numeric' => 'Selecione o cargo!'
-
             ]
         );
 
@@ -70,7 +65,6 @@ class GestorController extends Controller
         $server->cpf = $request->input('cpf');
         $server->password = Hash::make($password);
         $server->role_id = UserRole::GESTOR;
-        $server->position_id = $request->input('position_id');
         $server->save();
 
         SendEmailJob::dispatch($server, $password);
@@ -92,13 +86,11 @@ class GestorController extends Controller
      */
     public function edit(string $id)
     {
-        Gate::authorize('acesso-restrito-servidor');
-        $servidor = User::where('id', $id)->first();
-        $positions = Position::all();
+        Gate::authorize('acesso-permitido-admin');
+        $gestor = User::where('id', $id)->first();
 
-        return view('servidor.edit', [
-            'servidor' => $servidor,
-            'positions' => $positions
+        return view('gestor.edit', [
+            'gestor' => $gestor,
         ]);
     }
 
@@ -128,14 +120,12 @@ class GestorController extends Controller
                 'name' => 'required|string',
                 'email' => 'required|email',
                 'cpf' => 'required|string',
-                'position_id' => 'required|numeric'
             ],
             [
                 'name.required' => 'Campo nome é obrigatório',
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
-                'position_id.numeric' => 'Selecione o cargo!'
             ]
         );
 
@@ -144,7 +134,6 @@ class GestorController extends Controller
         $newData->name = $validatedData['name'];
         $newData->cpf = $validatedData['cpf'];
         $newData->email = $validatedData['email'];
-        $newData->position_id = $validatedData['position_id'];
 
         $newData->save();
 
