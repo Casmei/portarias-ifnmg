@@ -41,6 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('portarias')->group(function () {
         Route::get('/', [OrdinanceController::class, 'index'])->name('ordinance');
         Route::get('/buscar',[OrdinanceController::class,'searchName'])->name('portarias.search');
+        Route::get('/{id}/detalhes', [OrdinanceController::class, 'details'])->name('ordinance.details');
 
         Route::get('/adicionar', [OrdinanceController::class, 'create'])->name('ordinance.create');
         Route::post('/adicionar', [OrdinanceController::class, 'store'])->name('ordinance.store');

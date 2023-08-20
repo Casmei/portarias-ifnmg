@@ -218,4 +218,12 @@ class OrdinanceController extends Controller
         Gate::authorize('acesso-restrito-servidor');
         //
     }
+
+    public function details(string $id)
+    {
+        Gate::authorize('acesso-restrito-servidor');
+        $portaria = Ordinance::where('id', $id)->first();
+        return view('portaria.details', ['portaria' => $portaria]);
+    }
+
 }
