@@ -145,7 +145,6 @@ class ServidorController extends Controller
     public function dashboard()
     {
         $user = auth()->user();
-        $portarias = null;
 
         if($user->role_id == UserRole::SERVIDOR) {
             $portarias = Ordinance::find($user->ordinances()->get());
@@ -162,9 +161,15 @@ class ServidorController extends Controller
                     $portaria->status = false;
                 }
             }
+
+
+            return view('dashboard', [
+                'portarias' => $portarias,
+                'user' => $user,
+            ]);
         }
 
-        if($user->role_id == UserRole::ADMIN) {
+        if($user->role_id == UserRole::ADMIN || $user->role_id == UserRole::GESTOR ) {
             $portarias = Ordinance::all();
             foreach ($portarias as $portaria) {
                 $now = Carbon::now();
@@ -181,38 +186,38 @@ class ServidorController extends Controller
             }
 
             $portarias = Ordinance::all();
-
             $totalPortarias = $portarias->count();
+            $portariasAtivas = 0;
+            $porcentagemAtivas = 0;
+            $totalFinalizadas = 0;
+            $porcentagemFinalizadas = 0;
 
-            $portariasAtivas = $portarias->filter(function ($portaria) {
-                return now()->lessThan($portaria->end_date);
-            });
+            if($totalPortarias > 0) {
 
-            // dd($portariasAtivas);
+                $portariasAtivas = $portarias->filter(function ($portaria) {
+                    return now()->lessThan($portaria->end_date);
+                });
 
-            $totalAtivas = $portariasAtivas->count();
-            $porcentagemAtivas = ($totalAtivas / $totalPortarias) * 100;
+                $totalAtivas = $portariasAtivas->count();
+                $porcentagemAtivas = ($totalAtivas / $totalPortarias) * 100;
 
-            $portariasFinalizadas = $portarias->filter(function ($portaria) {
-                return $portaria->end_date && now()->greaterThanOrEqualTo($portaria->end_date);
-            });
+                $portariasFinalizadas = $portarias->filter(function ($portaria) {
+                    return $portaria->end_date && now()->greaterThanOrEqualTo($portaria->end_date);
+                });
 
-            $totalFinalizadas = $portariasFinalizadas->count();
-            $porcentagemFinalizadas = ($totalFinalizadas / $totalPortarias) * 100;
+                $totalFinalizadas = $portariasFinalizadas->count();
+                $porcentagemFinalizadas = ($totalFinalizadas / $totalPortarias) * 100;
+            }
 
             return view('dashboard', [
                 'portarias' => $portarias,
                 'user' => $user,
                 'totalPortarias' => $totalPortarias,
-                'totalAtivas' => $totalAtivas,
                 'porcentagemAtivas' => number_format($porcentagemAtivas, 2),
                 'totalFinalizadas' => $totalFinalizadas,
                 'porcentagemFinalizadas' => number_format($porcentagemFinalizadas, 2),
             ]);
         }
-
-
-        // return view('dashboard', compact('portarias', 'user'));
     }
 
 

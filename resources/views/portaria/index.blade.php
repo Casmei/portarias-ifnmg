@@ -95,6 +95,11 @@
                                                         </svg>
                                                         <p>detalhes</p>
                                                     </a>
+                                                    {{-- <a href="{{ url('portarias/' . $portaria->id . '/editar') }}"
+                                                        class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">
+                                                        <x-icon-edit />
+                                                        <p>Editar</p>
+                                                    </a> --}}
                                                     <a href="{{ route('ordinance.download', ['id' => $portaria->id]) }}"
                                                         class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16"
