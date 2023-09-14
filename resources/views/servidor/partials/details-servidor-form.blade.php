@@ -29,5 +29,11 @@
             {{ $position->name ?? '' }}
             <x-input-error :messages="$errors->get('position_id')" class="mt-2" />
         </div>
+
+        <div>
+            <x-input-label for="cargo" :value="__('SIAPE')" />
+            {{ $servidor->siape }}
+            <x-input-error :messages="$errors->get('position_id')" class="mt-2" />
+        </div>
     </div>
 </section>
