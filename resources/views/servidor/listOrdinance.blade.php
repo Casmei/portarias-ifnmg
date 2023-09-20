@@ -84,7 +84,7 @@
                                                     @endif
                                                 </td>
                                                 <td class="whitespace-nowrap px-6 py-4 flex space-x-2">
-                                                    <a href="./portarias/{{ $portaria->id }}/detalhes"
+                                                    <a href="{{route("ordinance.details",['id' => $portaria->id])}}"
                                                         class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                             height="16" fill="currentColor" class="bi bi-eye"
