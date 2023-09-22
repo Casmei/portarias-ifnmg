@@ -59,10 +59,11 @@
                                     </thead>
                                     <tbody>
 
-
                                     @foreach ($servidores as $servidor)
                                         <tr class="border-b border-gray-100">
-                                            <td class="whitespace-nowrap px-6 py-4 font-medium">{{ $servidor->name }}</td>
+                                            <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                <a href="{{ route('servidor.listOrdinance', ['id' => $servidor->id]) }}">{{ $servidor->name }}</a>
+                                            </td>
                                             <td class="whitespace-nowrap px-6 py-4"> {{ $servidor->ordinances_count }} </td>
                                         </tr>
                                     @endforeach

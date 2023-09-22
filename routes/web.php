@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [MemberOrdinanceController::class, 'index'])->name('welcome');
+Route::get('/{id}/listar-portarias-servidor', [MemberOrdinanceController::class, 'listOrdinance'])->name('servidor.listOrdinance');
 
 //TODO: Listar todas as portarias de um determinado servidor
 //TODO: Exibir informações básicas de determinada portaria
