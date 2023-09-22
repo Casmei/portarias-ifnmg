@@ -2,7 +2,6 @@
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
            <h2> Portarias do servidor {{$servidor?->name}}</h2>
-
         </h2>
     </x-slot>
 
@@ -24,17 +23,9 @@
                                 </span>
                                 <input
                                     class="placeholder:italic placeholder:text-sl   ate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-indigo-300 focus:ring-indigo-300 focus:ring-1 sm:text-sm"
-                                    placeholder="Buscar servidor pelo nome" type="text" name="search" />
+                                    placeholder="Buscar portaria" type="text" name="search" />
                             </label>
                         </form>
-                    </div>
-
-                    <div class="space-x-3 items-start flex justify-end">
-                        <a href="{{ route('ordinance.create') }}">
-                            <x-primary-button class="w-30">
-                                {{ __('Adicionar +') }}
-                            </x-primary-button>
-                        </a>
                     </div>
                 </div>
 
@@ -61,9 +52,9 @@
                                                     {{ $portaria->number }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">{{ $portaria->campus }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
-                                                    {{ $portaria->startDateFormatted }}</td>
+                                                    {{ $portaria->start_date }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
-                                                    {{ $portaria->endDateFormatted ?? '-' }}</td>
+                                                    {{ $portaria->end_date ?? '-' }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
                                                     @if ($portaria->status)
                                                         <span

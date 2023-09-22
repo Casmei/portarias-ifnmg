@@ -9,7 +9,6 @@ class Ordinance extends Model
 {
 
     protected $fillable = [
-        'id',
         'number',
         'start_date',
         'end_date',
