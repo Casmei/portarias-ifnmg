@@ -11,9 +11,10 @@ class MemberOrdinanceController extends Controller
 {
     public function index()
     {
-        $servidores = User::select('users.*', DB::raw('COUNT(id) AS ordinances_count'))
+        $servidores = User::select('users.*', DB::raw('COUNT(users.id) AS ordinances_count'))
             ->join('ordinance_user', 'users.id', '=', 'ordinance_user.user_id')
             ->groupBy('ordinance_user.user_id')
+            ->orderBy('ordinances_count','desc')
             ->get();
 
         return view('welcome', [
