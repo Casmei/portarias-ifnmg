@@ -18,5 +18,12 @@ class PositionSeeder extends Seeder
             ['name' => 'Coordenador', 'id' => 2],
             ['name' => 'Professor', 'id' => 3],
         ]);
+
+        DB::table('funcaos')->insert([
+            ['name' => 'Diretor Geral', 'id' => 1],
+            ['name' => 'Diretor', 'id' => 2],
+            ['name' => 'Secretario Geral', 'id' => 3],
+            ['name' => 'Secretario', 'id' => 4]
+        ]);
     }
 }

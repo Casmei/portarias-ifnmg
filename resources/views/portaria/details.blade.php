@@ -6,14 +6,17 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 d-flex justify-content-between">
             <a href="{{ route('ordinance') }}">
                 <x-return-button class="w-30" />
             </a>
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class=" p-4 sm:p-8 bg-white shadow sm:rounded-lg ">
                 <div class="max-w-xl">
                     @include('portaria.partials.details-portaria-form')
                 </div>
+            </div>
+            <div class="max-w-xl">
+                <embed src="./teste.pdf" width="760" height="500" type='application/pdf'>
             </div>
         </div>
     </div>

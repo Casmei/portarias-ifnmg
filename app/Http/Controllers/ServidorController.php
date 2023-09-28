@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Jobs\SendEmailJob;
 use App\Models\Ordinance;
 use App\Models\Position;
+use App\Models\Funcao;
 use App\Models\User;
 use Carbon\Carbon;
 use League\Csv\Reader;
@@ -52,7 +53,11 @@ class ServidorController extends Controller
     {
         Gate::authorize('acesso-restrito-servidor');
         $positions = Position::all();
-        return view('servidor.create', ['positions' => $positions]);
+        $funcaos = Funcao::all();
+        return view('servidor.create', [
+            'positions' => $positions,
+            'funcaos' => $funcaos
+        ]);
     }
 
     /**
@@ -86,6 +91,7 @@ class ServidorController extends Controller
                 $server->cpf = $row['cpf'];
                 $server->password = Hash::make($password);
                 $server->position_id = $row['position_id'];
+                $server->funcao_id = $row['funcao_id'];
                 $server->siape = $row['siape'];
                 $server->save();
 
@@ -108,8 +114,8 @@ class ServidorController extends Controller
                 'email'  => 'required|email',
                 'cpf' => 'required|string',
                 'siape' => 'required|string',
-                'position_id' => 'required|numeric'
-
+                'position_id' => 'required|numeric',
+                'funcao_id' => 'required|numeric'
 
             ],
             [
@@ -118,7 +124,8 @@ class ServidorController extends Controller
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
                 'siape.required' => 'Campo siape é obrigatório',
-                'position_id.numeric' => 'Selecione o cargo!'
+                'position_id.numeric' => 'Selecione o cargo!',
+                'funcao_id.numeric' => 'Selecione a função!'
 
             ]
         );
@@ -131,6 +138,7 @@ class ServidorController extends Controller
         $server->cpf = $request->input('cpf');
         $server->password = Hash::make($password);
         $server->position_id = $request->input('position_id');
+        $server->funcao_id = $request->input('funcao_id');
         $server->siape = $request->input('siape');
         $server->save();
 
@@ -229,10 +237,12 @@ class ServidorController extends Controller
         Gate::authorize('acesso-restrito-servidor');
         $servidor = User::where('id', $id)->first();
         $positions = Position::all();
+        $funcaos = Funcao::all();
 
         return view('servidor.edit', [
             'servidor' => $servidor,
-            'positions' => $positions
+            'positions' => $positions,
+            'funcaos' => $funcaos
         ]);
     }
 
@@ -270,10 +280,12 @@ class ServidorController extends Controller
         }
 
         $position = Position::where('id', $servidor->position_id)->first();
+        $funcao = Funcao::where('id', $servidor->funcao_id)->first();
 
         return view('servidor.details', [
             'servidor' => $servidor,
             'position' => $position,
+            'funcao' => $funcao,
             'totalPortarias' => $totalPortarias,
             'totalAtivas' => $totalAtivas,
             'porcentagemAtivas' => number_format($porcentagemAtivas, 2),
@@ -298,7 +310,8 @@ class ServidorController extends Controller
                 'email' => 'required|email',
                 'cpf' => 'required|string',
                 'siape' => 'required|string',
-                'position_id' => 'required|numeric'
+                'position_id' => 'required|numeric',
+                'funcao_id' => 'required|numeric'
             ],
             [
                 'name.required' => 'Campo nome é obrigatório',
@@ -306,7 +319,8 @@ class ServidorController extends Controller
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
                 'siape.required' => 'Campo siape é obrigatorio',
-                'position_id.numeric' => 'Selecione o cargo!'
+                'position_id.numeric' => 'Selecione o cargo!',
+                'funcao_id.numeric' => 'Selecione a função'
             ]
         );
 
@@ -317,6 +331,7 @@ class ServidorController extends Controller
         $newData->email = $validatedData['email'];
         $newData->siape = $validatedData['siape'];
         $newData->position_id = $validatedData['position_id'];
+        $newData->funcao_id = $validatedData['funcao_id'];
 
         $newData->save();
 
