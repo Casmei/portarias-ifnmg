@@ -107,11 +107,29 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="flex justify-between space-x-6 mt-5">
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                    <p>Portarias Totais</p>
+                    <h1 class="text-6xl mt-2 font-bold">{{ $totalPorta }}</h1>
+                </div>
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                    <p>Portarias Permanentes</p>
+                    <h1 class="text-6xl mt-2 font-bold">{{ $totalPermanentes }}</h1>
+                </div>
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                    <p>Portarias Provisorias</p>
+                    <h1 class="text-6xl mt-2 font-bold">{{ $totalNaoPermanentes }}</h1>
+                </div>
+
+            </div>
         </div>
     </div>
 </x-app-layout>
