@@ -49,6 +49,19 @@
             <x-input-error :messages="$errors->get('position_id')" class="mt-2" />
         </div>
 
+        <div>
+            <x-input-label for="funcao" :value="__('Função')" />
+            <select id="funcao" name="funcao_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-gray-700">
+                <option value="">Escolha a Função</option>
+                @foreach ($funcaos as $funcao)
+                    <option value="{{ $funcao->id }}" {{ old('position_id', $servidor->funcao_id) == $funcao->id ? 'selected' : '' }}>
+                        {{ $funcao->name }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('position_id')" class="mt-2" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Editar') }}</x-primary-button>
         </div>
