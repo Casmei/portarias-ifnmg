@@ -128,7 +128,6 @@
                     <p>Portarias Provisorias</p>
                     <h1 class="text-6xl mt-2 font-bold">{{ $totalNaoPermanentes }}</h1>
                 </div>
-
             </div>
         </div>
     </div>

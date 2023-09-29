@@ -15,9 +15,6 @@
                     @include('portaria.partials.details-portaria-form')
                 </div>
             </div>
-            <div class="max-w-xl">
-                <embed src="./teste.pdf" width="760" height="500" type='application/pdf'>
-            </div>
         </div>
     </div>
 </x-app-layout>

@@ -89,6 +89,7 @@
                 file:text-white hover:file:bg-indigo-600
                 " />
             </label>
+            <x-input-error :messages="$errors->get('pdf_file')" class="mt-2" />
         </div>
 
         <div class="block mt-4">
