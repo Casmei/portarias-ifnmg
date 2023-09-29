@@ -31,6 +31,29 @@ class MemberOrdinanceController extends Controller
         ->get();
 
 
-        return view('servidor.listOrdinance', ['portarias' => $portarias,'servidor' => $servidor]);
+        $porta = Ordinance::find($servidor->ordinances()->get());
+        $totalPorta = $porta->count();
+
+        $permanentes = Ordinance::select($servidor->id, 'ordinances')
+        ->where('end_date', '=' , null)
+        ->get();
+
+        $totalPermanentes = $permanentes->count();
+
+        $naoPermanentes = Ordinance::select($servidor->id, 'ordinances')
+        ->where('end_date', '!=' ,  null)
+        ->get();
+
+
+
+        $totalNaoPermanentes = $naoPermanentes->count();
+
+        return view('servidor.listOrdinance', [
+            'portarias' => $portarias,
+            'servidor' => $servidor,
+            'totalPorta' => $totalPorta,
+            'totalPermanentes' => $totalPermanentes,
+            'totalNaoPermanentes' => $totalNaoPermanentes
+        ]);
     }
 }
