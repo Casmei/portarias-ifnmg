@@ -1,0 +1,71 @@
+version: "3"
+
+services:
+    midit-app:
+        build: .
+        container_name: midit_app
+        tty: true
+        ports:
+            - "8000:80"
+            - "5173:5173"
+        environment:
+            - DB_CONNECTION=${DB_CONNECTION}
+            - DB_HOST=${DB_HOST}
+            - DB_PORT=${DB_PORT}
+            - DB_DATABASE=${DB_DATABASE}
+            - DB_USERNAME=${DB_USERNAME}
+            - DB_PASSWORD=${DB_PASSWORD}
+        depends_on:
+            - midit-db
+        networks:
+            - default-network
+        volumes:
+            - ./:/usr/share/nginx
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    midit-web:
+        image: node:latest
+        container_name: midit_web
+        working_dir: /usr/share/nginx
+        command: bash -c "npm install && npm run build"
+        tty: true
+        ports:
+            - "5174:5173"
+        depends_on:
+            - midit-app
+            - midit-mailhog
+        networks:
+            - default-network
+        volumes:
+            - ./:/usr/share/nginx
+    midit-db:
+        image: postgres:latest
+        container_name: midit_db
+        restart: always
+        tty: true
+        ports:
+            - "5433:5432"
+        environment:
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_DB=${DB_DATABASE}
+            - PGDATA=/var/lib/postgresql/data/pg-files
+        networks:
+            - default-network
+        volumes:
+            - db-data:/var/lib/postgresql/data
+            - ./postgresql.conf:/etc/postgresql.conf
+    midit-mailhog:
+        image: mailhog/mailhog:latest
+        container_name: midit_mailhog
+        ports:
+            - "1025:1025"
+            - "8025:8025"
+        networks:
+            - default-network
+
+networks:
+    default-network:
+        driver: bridge
+
+volumes:
+    db-data: {}
