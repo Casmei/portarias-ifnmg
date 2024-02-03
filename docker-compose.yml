@@ -25,13 +25,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: password
 
   php:
-    image: dunglas/frankenphp
+    build: .
     tty: true
     restart: always
     ports:
-      - "80:80" # HTTP
-      - "443:443" # HTTPS
-      - "443:443/udp" # HTTP/3
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
     volumes:
         - caddy_data:/data
         - caddy_config:/config
