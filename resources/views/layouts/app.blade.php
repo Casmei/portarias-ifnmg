@@ -34,9 +34,10 @@
         @endif
 
         <!-- Page Content -->
+        {{-- TODO: RESOLVER PROBLEMA DA MUDANÇA DE SENHA --}}
         <main>
             @can('senha-atualizada')
-                <x-changed-password name="change-password" :show="true" />
+                <x-changed-password name="change-password" :show="false" />
             @endcan
             {{ $slot }}
         </main>
