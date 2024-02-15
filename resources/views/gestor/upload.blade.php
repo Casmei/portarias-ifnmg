@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Adicionar servidor via CSV') }}
+            {{ __('Adicionar gestor via CSV') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <a href="{{ route('servidores') }}">
+            <a href="{{ route('gestores') }}">
                 <x-return-button class="w-30" />
             </a>
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -19,11 +19,11 @@
                     </h2>
 
                     <p class="mt-1 text-sm text-gray-600">
-                        {{ __('Forneça um arquivo csv contendo informações dos servidores.') }}
+                        {{ __('Forneça um arquivo csv contendo informações dos gestores.') }}
                     </p>
                 </header>
 
-                <form method="post" action="{{ route('servidores.upload') }}" class="mt-6 space-y-6 " enctype="multipart/form-data">
+                <form method="post" action="{{ route('gestores.upload') }}" class="mt-6 space-y-6 " enctype="multipart/form-data">
                     @csrf
                     <label class="block">
                         <input name="csv_file" type="file" class="

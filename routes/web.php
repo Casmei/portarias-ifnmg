@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GestorController;
 use App\Http\Controllers\OrdinanceController;
 use App\Http\Controllers\ServidorController;
+use App\Http\Controllers\MemberOrdinanceController;
 
 
 use Illuminate\Support\Facades\Route;
@@ -26,9 +27,8 @@ use Illuminate\Support\Facades\Route;
 | Rotas Públicas
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [MemberOrdinanceController::class, 'index'])->name('welcome');
+Route::get('/{id}/listar-portarias-servidor', [MemberOrdinanceController::class, 'listOrdinance'])->name('servidor.listOrdinance');
 
 //TODO: Listar todas as portarias de um determinado servidor
 //TODO: Exibir informações básicas de determinada portaria
@@ -40,6 +40,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('portarias')->group(function () {
         Route::get('/', [OrdinanceController::class, 'index'])->name('ordinance');
+        Route::get('/buscar',[OrdinanceController::class,'searchName'])->name('portarias.search');
+        Route::get('/{id}/detalhes', [OrdinanceController::class, 'details'])->name('ordinance.details');
 
         Route::get('/adicionar', [OrdinanceController::class, 'create'])->name('ordinance.create');
         Route::post('/adicionar', [OrdinanceController::class, 'store'])->name('ordinance.store');
@@ -68,11 +70,33 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/upload', [ServidorController::class, 'renderUpload'])->name('servidores.upload');
         Route::post('/upload', [ServidorController::class, 'uploadServer'])->name('servidores.upload');
 
+        Route::get('/{id}/detalhes', [ServidorController::class, 'details'])->name('servidores.details');
+
+
         Route::get('/{id}/editar', [ServidorController::class, 'edit'])->name('servidores.edit');
         Route::put('/{id}', [ServidorController::class, 'update'])->name('servidores.update');
 
         Route::get('/{id}/excluir', [ServidorController::class, 'delete'])->name('servidores.delete');
         Route::delete('/{id}', [ServidorController::class, 'destroy'])->name('servidores.destroy');
+    });
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::prefix('gestores')->group(function () {
+        Route::get('/', [GestorController::class, 'index'])->name('gestores');
+        Route::get('/buscar',[GestorController::class,'searchName'])->name('gestores.search');
+
+        Route::get('/adicionar', [GestorController::class, 'create'])->name('gestores.create');
+        Route::post('/adicionar', [GestorController::class, 'store'])->name('gestores.store');
+
+        Route::get('/upload', [GestorController::class, 'renderUpload'])->name('gestores.upload');
+        Route::post('/upload', [GestorController::class, 'uploadServer'])->name('gestores.upload');
+
+        Route::get('/{id}/editar', [GestorController::class, 'edit'])->name('gestores.edit');
+        Route::put('/{id}', [GestorController::class, 'update'])->name('gestores.update');
+
+        Route::get('/{id}/excluir', [GestorController::class, 'delete'])->name('gestores.delete');
+        Route::delete('/{id}', [GestorController::class, 'destroy'])->name('gestores.destroy');
     });
 });
 

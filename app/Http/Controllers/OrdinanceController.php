@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use App\Models\Ordinance;
 use App\Models\User;
+use App\Models\MemberOrdinance;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class OrdinanceController extends Controller
@@ -24,7 +26,9 @@ class OrdinanceController extends Controller
         foreach ($portarias as $portaria) {
             $now = Carbon::now();
             $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
-            $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+            if ($portaria->end_date) {
+                $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+            }
 
             if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
                 $portaria->status = true;
@@ -36,6 +40,49 @@ class OrdinanceController extends Controller
         return view('portaria.index', compact('portarias'));
     }
 
+    /**
+     * Search Name the specified resource from storage.
+     */
+    public function searchName()
+    {
+        Gate::authorize('acesso-restrito-servidor');
+
+        $search = request('search');
+
+        if($search){
+            $portarias = Ordinance::where([
+                ['number','like','%'.$search.'%']
+            ])->get();
+
+            foreach ($portarias as $portaria) {
+                $now = Carbon::now();
+                $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
+                $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+
+                if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
+                    $portaria->status = true;
+                } else {
+                    $portaria->status = false;
+                }
+            }
+
+            return view('portaria.index', ['portarias' => $portarias,'search' => $search]);
+        }else{
+            $portarias = Ordinance::paginate(10);
+            foreach ($portarias as $portaria) {
+                $now = Carbon::now();
+                $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
+                $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+
+                if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
+                    $portaria->status = true;
+                } else {
+                    $portaria->status = false;
+                }
+            }
+            return view('portaria.index', ['portarias' => $portarias]);
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -53,10 +100,10 @@ class OrdinanceController extends Controller
     public function store(Request $request)
     {
         Gate::authorize('acesso-restrito-servidor');
+
         $request->validate([
             'ordinance_number' => 'required',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
             'campus' => 'required',
             'description' => 'required',
             'pdf_file' => 'required|mimes:pdf|max:2048',
@@ -65,9 +112,6 @@ class OrdinanceController extends Controller
             'ordinance_number.required' => 'O número da portaria é obrigatório.',
             'start_date.required' => 'A data de início é obrigatória.',
             'start_date.date' => 'A data de início deve ser uma data válida.',
-            'end_date.required' => 'A data de término é obrigatória.',
-            'end_date.date' => 'A data de término deve ser uma data válida.',
-            'end_date.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
             'campus.required' => 'O campus é obrigatório.',
             'description.required' => 'A descrição é obrigatória.',
             'pdf_file.required' => 'O arquivo PDF é obrigatório.',
@@ -77,10 +121,24 @@ class OrdinanceController extends Controller
             'servidores.array' => 'A lista de servidores deve ser um array.',
         ]);
 
+        if (!$request->input('end_date_permanente')) {
+            $request->validate([
+                'end_date' => 'required|date|after_or_equal:start_date',
+            ], [
+                'end_date.required' => 'A data de término é obrigatória.',
+                'end_date.date' => 'A data de término deve ser uma data válida.',
+                'end_date.after_or_equal' => 'A data de término deve ser igual ou posterior à data de início.',
+            ]);
+        }
+
         $ordinance = new Ordinance();
         $ordinance->number = $request->input('ordinance_number');
         $ordinance->start_date = $request->input('start_date');
-        $ordinance->end_date = $request->input('end_date');
+        $ordinance->end_date = null;
+
+        if (!$request->input('end_date_permanente')) {
+            $ordinance->end_date = $request->input('end_date');
+        }
         $ordinance->campus = $request->input('campus');
         $ordinance->description = $request->input('description');
 
@@ -99,7 +157,14 @@ class OrdinanceController extends Controller
         $ordinance->save();
 
         $servidores = $request->input('servidores');
-        $ordinance->users()->sync($servidores);
+
+        foreach ($servidores as $servidor) {
+            $portariaParaServidor = MemberOrdinance::create([
+                'user_id' => $servidor,
+                'ordinance_id' => $ordinance->id
+            ]);
+        }
+
         return redirect()->route('ordinance');
     }
 
@@ -162,4 +227,21 @@ class OrdinanceController extends Controller
         Gate::authorize('acesso-restrito-servidor');
         //
     }
+
+    public function details(string $id)
+    {
+        Gate::authorize('acesso-restrito-servidor');
+
+        $portaria = Ordinance::where('id', $id)->first();
+
+        $servidores = Ordinance::select('ordinances.*')
+            ->join('ordinance_user', 'ordinances.id', '=', 'ordinance_user.ordinance_id')
+            ->with('users')
+            ->where('ordinances.id', $id)
+            ->first()
+        ;
+
+        return view('portaria.details', ['portaria' => $portaria, 'servidores' => $servidores]);
+    }
+
 }

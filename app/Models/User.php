@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Ordinance;
+use App\Models\MemberOrdinance;
 
 use Laravel\Sanctum\HasApiTokens;
 
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
+        'funcao',
         'password_changed'
     ];
 
@@ -57,6 +59,11 @@ class User extends Authenticatable
         return $this->hasOne(Role::class, 'role_id');
     }
 
+    public function funcao()
+    {
+        return $this->hasOne(Funcao::class, 'funcao_id');
+    }
+
     /**
      * Get the position associated with the User
      *
@@ -69,6 +76,11 @@ class User extends Authenticatable
 
     public function ordinances()
     {
-        return $this->belongsToMany(Ordinance::class);
+        return $this->hasMany(MemberOrdinance::class);
+    }
+
+    public function ordinance_user()
+    {
+        return $this->belongsTo(MemberOrdinance::class, 'user_id');
     }
 }

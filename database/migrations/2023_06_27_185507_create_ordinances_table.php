@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('number')->unique();
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->string('campus');
             $table->string('description');
             $table->string('pdf_url')->nullable()->after('description');
@@ -24,8 +24,10 @@ return new class extends Migration
         });
 
         Schema::create('ordinance_user', function (Blueprint $table) {
+            $table->primary(['user_id', 'ordinance_id']);
             $table->foreignId('user_id')->constrained()->onDelete('CASCADE');
             $table->foreignId('ordinance_id')->constrained()->nullable()->onDelete('CASCADE');
+            $table->timestamps();
         });
     }
 

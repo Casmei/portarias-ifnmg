@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Listagem de Portarias') }}
+           <h2> Portarias do servidor {{$servidor?->name}}</h2>
         </h2>
     </x-slot>
 
@@ -23,17 +23,9 @@
                                 </span>
                                 <input
                                     class="placeholder:italic placeholder:text-sl   ate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-indigo-300 focus:ring-indigo-300 focus:ring-1 sm:text-sm"
-                                    placeholder="Buscar servidor pelo nome" type="text" name="search" />
+                                    placeholder="Buscar portaria" type="text" name="search" />
                             </label>
                         </form>
-                    </div>
-
-                    <div class="space-x-3 items-start flex justify-end">
-                        <a href="{{ route('ordinance.create') }}">
-                            <x-primary-button class="w-30">
-                                {{ __('Adicionar +') }}
-                            </x-primary-button>
-                        </a>
                     </div>
                 </div>
 
@@ -60,9 +52,9 @@
                                                     {{ $portaria->number }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">{{ $portaria->campus }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
-                                                    {{ $portaria->startDateFormatted }}</td>
+                                                    {{ $portaria->start_date }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
-                                                    {{ $portaria->endDateFormatted ?? '-' }}</td>
+                                                    {{ $portaria->end_date ?? '-' }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">
                                                     @if ($portaria->status)
                                                         <span
@@ -83,7 +75,7 @@
                                                     @endif
                                                 </td>
                                                 <td class="whitespace-nowrap px-6 py-4 flex space-x-2">
-                                                    <a href="./portarias/{{ $portaria->id }}/detalhes"
+                                                    <a href="{{route("ordinance.details",['id' => $portaria->id])}}"
                                                         class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                             height="16" fill="currentColor" class="bi bi-eye"
@@ -95,11 +87,6 @@
                                                         </svg>
                                                         <p>detalhes</p>
                                                     </a>
-                                                    {{-- <a href="{{ url('portarias/' . $portaria->id . '/editar') }}"
-                                                        class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">
-                                                        <x-icon-edit />
-                                                        <p>Editar</p>
-                                                    </a> --}}
                                                     <a href="{{ route('ordinance.download', ['id' => $portaria->id]) }}"
                                                         class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16"
@@ -120,11 +107,28 @@
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
+
                     </div>
+
+                </div>
+
+            </div>
+            <div class="flex justify-between space-x-6 mt-5">
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                    <p>Portarias Totais</p>
+                    <h1 class="text-6xl mt-2 font-bold">{{ $totalPorta }}</h1>
+                </div>
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                    <p>Portarias Permanentes</p>
+                    <h1 class="text-6xl mt-2 font-bold">{{ $totalPermanentes }}</h1>
+                </div>
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                    <p>Portarias Provisorias</p>
+                    <h1 class="text-6xl mt-2 font-bold">{{ $totalNaoPermanentes }}</h1>
                 </div>
             </div>
-
         </div>
     </div>
 </x-app-layout>

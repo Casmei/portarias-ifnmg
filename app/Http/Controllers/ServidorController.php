@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
 use App\Jobs\SendEmailJob;
+use App\Models\Ordinance;
 use App\Models\Position;
+use App\Models\Funcao;
 use App\Models\User;
+use Carbon\Carbon;
 use League\Csv\Reader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -50,7 +53,11 @@ class ServidorController extends Controller
     {
         Gate::authorize('acesso-restrito-servidor');
         $positions = Position::all();
-        return view('servidor.create', ['positions' => $positions]);
+        $funcaos = Funcao::all();
+        return view('servidor.create', [
+            'positions' => $positions,
+            'funcaos' => $funcaos
+        ]);
     }
 
     /**
@@ -84,6 +91,8 @@ class ServidorController extends Controller
                 $server->cpf = $row['cpf'];
                 $server->password = Hash::make($password);
                 $server->position_id = $row['position_id'];
+                $server->funcao_id = $row['funcao_id'];
+                $server->siape = $row['siape'];
                 $server->save();
 
                 SendEmailJob::dispatch($server, $password);
@@ -104,8 +113,9 @@ class ServidorController extends Controller
                 'name'  => 'required|string',
                 'email'  => 'required|email',
                 'cpf' => 'required|string',
-                'position_id' => 'required|numeric'
-
+                'siape' => 'required|string',
+                'position_id' => 'required|numeric',
+                'funcao_id' => 'required|numeric'
 
             ],
             [
@@ -113,7 +123,9 @@ class ServidorController extends Controller
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
-                'position_id.numeric' => 'Selecione o cargo!'
+                'siape.required' => 'Campo siape é obrigatório',
+                'position_id.numeric' => 'Selecione o cargo!',
+                'funcao_id.numeric' => 'Selecione a função!'
 
             ]
         );
@@ -126,6 +138,8 @@ class ServidorController extends Controller
         $server->cpf = $request->input('cpf');
         $server->password = Hash::make($password);
         $server->position_id = $request->input('position_id');
+        $server->funcao_id = $request->input('funcao_id');
+        $server->siape = $request->input('siape');
         $server->save();
 
         SendEmailJob::dispatch($server, $password);
@@ -138,15 +152,80 @@ class ServidorController extends Controller
      */
     public function dashboard()
     {
-        Gate::authorize('acesso-restrito-servidor');
         $user = auth()->user();
-        $portarias = null;
 
         if($user->role_id == UserRole::SERVIDOR) {
-            $portarias = $user->ordinances()->get();
+            $portarias = Ordinance::find($user->ordinances()->get());
+            foreach ($portarias as $portaria) {
+                $now = Carbon::now();
+                $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
+                if ($portaria->end_date) {
+                    $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+                }
+
+                if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
+                    $portaria->status = true;
+                } else {
+                    $portaria->status = false;
+                }
+            }
+
+
+            return view('dashboard', [
+                'portarias' => $portarias,
+                'user' => $user,
+            ]);
         }
 
-        return view('dashboard', compact('portarias', 'user'));
+        if($user->role_id == UserRole::ADMIN || $user->role_id == UserRole::GESTOR ) {
+            $portarias = Ordinance::all();
+            foreach ($portarias as $portaria) {
+                $now = Carbon::now();
+                $portaria->startDateFormatted = Carbon::parse($portaria->start_date)->format('d/m/Y');
+                if ($portaria->end_date) {
+                    $portaria->endDateFormatted = Carbon::parse($portaria->end_date)->format('d/m/Y');
+                }
+
+                if ($now->isBetween($portaria->start_date, $portaria->end_date)) {
+                    $portaria->status = true;
+                } else {
+                    $portaria->status = false;
+                }
+            }
+
+            $portarias = Ordinance::all();
+            $totalPortarias = $portarias->count();
+            $portariasAtivas = 0;
+            $porcentagemAtivas = 0;
+            $totalFinalizadas = 0;
+            $porcentagemFinalizadas = 0;
+
+            if($totalPortarias > 0) {
+
+                $portariasAtivas = $portarias->filter(function ($portaria) {
+                    return now()->lessThan($portaria->end_date);
+                });
+
+                $totalAtivas = $portariasAtivas->count();
+                $porcentagemAtivas = ($totalAtivas / $totalPortarias) * 100;
+
+                $portariasFinalizadas = $portarias->filter(function ($portaria) {
+                    return $portaria->end_date && now()->greaterThanOrEqualTo($portaria->end_date);
+                });
+
+                $totalFinalizadas = $portariasFinalizadas->count();
+                $porcentagemFinalizadas = ($totalFinalizadas / $totalPortarias) * 100;
+            }
+
+            return view('dashboard', [
+                'portarias' => $portarias,
+                'user' => $user,
+                'totalPortarias' => $totalPortarias,
+                'porcentagemAtivas' => number_format($porcentagemAtivas, 2),
+                'totalFinalizadas' => $totalFinalizadas,
+                'porcentagemFinalizadas' => number_format($porcentagemFinalizadas, 2),
+            ]);
+        }
     }
 
 
@@ -158,12 +237,66 @@ class ServidorController extends Controller
         Gate::authorize('acesso-restrito-servidor');
         $servidor = User::where('id', $id)->first();
         $positions = Position::all();
+        $funcaos = Funcao::all();
 
         return view('servidor.edit', [
             'servidor' => $servidor,
-            'positions' => $positions
+            'positions' => $positions,
+            'funcaos' => $funcaos
         ]);
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function details(string $id)
+    {
+        Gate::authorize('acesso-restrito-servidor');
+
+        $servidor = User::where('id', $id)->first();
+
+        $portarias = Ordinance::find($servidor->ordinances()->get());
+
+        $totalPortarias = $portarias->count();
+        $totalAtivas = 0;
+        $porcentagemAtivas = 0;
+        $totalFinalizadas = 0;
+        $porcentagemFinalizadas = 0;
+
+        if ($totalPortarias > 0) {
+            $portariasAtivas = $portarias->filter(function ($portaria) {
+                return now()->lessThan($portaria->end_date);
+            });
+
+            $totalAtivas = $portariasAtivas->count();
+            $porcentagemAtivas = ($totalAtivas / $totalPortarias) * 100;
+
+            $portariasFinalizadas = $portarias->filter(function ($portaria) {
+                return $portaria->end_date && now()->greaterThanOrEqualTo($portaria->end_date);
+            });
+
+            $totalFinalizadas = $portariasFinalizadas->count();
+            $porcentagemFinalizadas = ($totalFinalizadas / $totalPortarias) * 100;
+        }
+
+        $position = Position::where('id', $servidor->position_id)->first();
+        $funcao = Funcao::where('id', $servidor->funcao_id)->first();
+
+        return view('servidor.details', [
+            'servidor' => $servidor,
+            'position' => $position,
+            'funcao' => $funcao,
+            'totalPortarias' => $totalPortarias,
+            'totalAtivas' => $totalAtivas,
+            'porcentagemAtivas' => number_format($porcentagemAtivas, 2),
+            'totalFinalizadas' => $totalFinalizadas,
+            'porcentagemFinalizadas' => number_format($porcentagemFinalizadas, 2),
+        ]);
+    }
+
+
+
+
 
     /**
      * Update the specified resource in storage.
@@ -176,14 +309,18 @@ class ServidorController extends Controller
                 'name' => 'required|string',
                 'email' => 'required|email',
                 'cpf' => 'required|string',
-                'position_id' => 'required|numeric'
+                'siape' => 'required|string',
+                'position_id' => 'required|numeric',
+                'funcao_id' => 'required|numeric'
             ],
             [
                 'name.required' => 'Campo nome é obrigatório',
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
                 'cpf.required' => 'Campo cpf é obrigatório',
-                'position_id.numeric' => 'Selecione o cargo!'
+                'siape.required' => 'Campo siape é obrigatorio',
+                'position_id.numeric' => 'Selecione o cargo!',
+                'funcao_id.numeric' => 'Selecione a função'
             ]
         );
 
@@ -192,7 +329,9 @@ class ServidorController extends Controller
         $newData->name = $validatedData['name'];
         $newData->cpf = $validatedData['cpf'];
         $newData->email = $validatedData['email'];
+        $newData->siape = $validatedData['siape'];
         $newData->position_id = $validatedData['position_id'];
+        $newData->funcao_id = $validatedData['funcao_id'];
 
         $newData->save();
 

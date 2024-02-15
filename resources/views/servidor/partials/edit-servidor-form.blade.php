@@ -31,8 +31,8 @@
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Matrícula do Siapi')" />
-            <x-text-input id="email" name="" type="text" class="mt-1 block w-full" value="teste" />
+            <x-input-label for="siape" :value="__('Matrícula do SIAPE')" />
+            <x-text-input id="siape" name="siape" type="text" class="mt-1 block w-full" :value="old('siape', $servidor->siape)" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
@@ -43,6 +43,19 @@
                 @foreach ($positions as $position)
                     <option value="{{ $position->id }}" {{ old('position_id', $servidor->position_id) == $position->id ? 'selected' : '' }}>
                         {{ $position->name }}
+                    </option>
+                @endforeach
+            </select>
+            <x-input-error :messages="$errors->get('position_id')" class="mt-2" />
+        </div>
+
+        <div>
+            <x-input-label for="funcao" :value="__('Função')" />
+            <select id="funcao" name="funcao_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-gray-700">
+                <option value="">Escolha a Função</option>
+                @foreach ($funcaos as $funcao)
+                    <option value="{{ $funcao->id }}" {{ old('position_id', $servidor->funcao_id) == $funcao->id ? 'selected' : '' }}>
+                        {{ $funcao->name }}
                     </option>
                 @endforeach
             </select>
