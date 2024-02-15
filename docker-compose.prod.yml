@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - app_network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgAdmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin
+      PGADMIN_DEFAULT_PASSWORD: root
+    networks:
+      - app_network
+
+  php:
+    image: malii/portarias
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+        - caddy_data:/data
+        - caddy_config:/config
+    networks:
+      - app_network
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  app_network:
+    driver: bridge
