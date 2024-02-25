@@ -4,23 +4,21 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v2
-      - name: Deploy para o servidor
-        uses: easingthemes/ssh-deploy@v2
+        uses: actions/checkout@v3
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+      - name: Ssh
+        run: |
+          mkdir -p ~/.ssh/
+          ssh-keyscan -t rsa ${{secrets.REMOTE_HOST}} > ~/.ssh/known_hosts
+      - name: Git Pull
+        run: |
+          sshpass -p "${{secrets.REMOTE_USER}}" ssh ${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}} \
+          'cd ${{secrets.REMOTE_TARGET}} && git pull'
 
-      env:
-          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: "."
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
