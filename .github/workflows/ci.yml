@@ -16,8 +16,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Deploy para o servidor
         uses: easingthemes/ssh-deploy@v2
-
-      env:
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           ARGS: "-rltgoDzvO --delete"
           SOURCE: "."
