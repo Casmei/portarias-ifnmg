@@ -35,10 +35,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('cpf')->unique();
             $table->string('password');
-            $table->integer('role_id')->default(1);
-            $table->integer('funcao_id')->default(1);
+            $table->unsignedBigInteger('role_id')->default(1);
+            $table->unsignedBigInteger('funcao_id')->default(1);
             $table->string('siape')->unique()->nullable();
-            $table->integer('position_id')->nullable();
+            $table->unsignedBigInteger('position_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
