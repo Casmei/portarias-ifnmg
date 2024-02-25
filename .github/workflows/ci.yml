@@ -13,14 +13,14 @@ jobs:
         uses: actions/checkout@v3
       - name: Install sshpass
         run: sudo apt-get update && sudo apt-get install -y sshpass
-      - name: Ssh
-        run: |
-          mkdir -p ~/.ssh/
-          echo the "${{secrets.PRIVATE_KEY}}" > ~/.ssh/github.key
-          sudo chmod 600 ~/.ssh/github.key
-          ssh-keyscan -t rsa ${{secrets.REMOTE_HOST}} > ~/.ssh/known_hosts
+      # - name: Ssh
+      #   run: |
+      #     mkdir -p ~/.ssh/
+      #     echo the "${{secrets.PRIVATE_KEY}}" > ~/.ssh/github.key
+      #     sudo chmod 600 ~/.ssh/github.key
+      #     ssh-keyscan -t rsa ${{secrets.REMOTE_HOST}} > ~/.ssh/known_hosts
       - name: Git Pull
         run: |
-          sshpass -p "${{secrets.REMOTE_USER}}" ssh -i ~/.ssh/github.key ${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}} \
+          sshpass -p "${{secrets.REMOTE_USER}}" ssh ${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}} \
           'cd ${{secrets.REMOTE_TARGET}} && sudo git pull'
 
