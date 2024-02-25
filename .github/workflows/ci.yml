@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v3
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
       - name: Ssh
         run: |
           mkdir -p ~/.ssh/
@@ -19,6 +21,6 @@ jobs:
           ssh-keyscan -t rsa ${{secrets.REMOTE_HOST}} > ~/.ssh/known_hosts
       - name: Git Pull
         run: |
-          ssh ${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}} \
+          sshpass -p "${{secrets.REMOTE_USER}}" ssh ${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}} \
           'cd ${{secrets.REMOTE_TARGET}} && git pull'
 
