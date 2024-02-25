@@ -18,6 +18,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v3  # Atualizado para a versão v3
         env:
           SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          ARGS: "-rltgoDzvO --delete"
           SOURCE: "."
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
