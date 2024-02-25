@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Atualizado para a versão v3
       - name: Deploy para o servidor
-        uses: easingthemes/ssh-deploy@v2
+        uses: easingthemes/ssh-deploy@v3  # Atualizado para a versão v3
         env:
           SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
           ARGS: "-rltgoDzvO --delete"
