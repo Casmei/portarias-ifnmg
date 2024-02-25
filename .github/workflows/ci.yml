@@ -14,7 +14,7 @@ jobs:
       - name: Ssh
         run: |
           mkdir -p ~/.ssh/
-          echo ${{secrets.PRIVATE_KEY}} > ~/.ssh/id_rsa
+          echo the "${{secrets.PRIVATE_KEY}}" > ~/.ssh/id_rsa
           sudo chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -t rsa ${{secrets.REMOTE_HOST}} > ~/.ssh/known_hosts
       - name: Git Pull
