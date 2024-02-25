@@ -4,22 +4,21 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
-        uses: actions/checkout@v3  # Atualizado para a versão v3
-      - name: Deploy para o servidor
-        uses: easingthemes/ssh-deploy@v3  # Atualizado para a versão v3
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: "."
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
+        uses: actions/checkout@v3
+      - name: Ssh
+        run: |
+          mkdir -p ~/.ssh/
+          echo "{{secrets.PRIVATE_KEY}}" > ../private.key
+          sudo chmod 600 ../private.key
+          ssh-keyscan -t rsa {{secrets.REMOTE_HOST}} > ~/.ssh/known_hosts
+      - name: Git Pull
+        run: |
+          ssh {{secrets.REMOTE_USER}}@{{secrets.REMOTE_HOST}} \
+          'cd {{secrets.REMOTE_TARGET}} && git pull'
+
