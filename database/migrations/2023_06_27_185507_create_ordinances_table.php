@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->string('campus');
             $table->string('description');
-            $table->string('pdf_url')->nullable()->after('description');
+            $table->string('pdf_url')->nullable();  // Removido o método 'after'
             $table->boolean('visibility');
             $table->timestamps();
         });
