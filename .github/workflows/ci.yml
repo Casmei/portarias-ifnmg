@@ -14,7 +14,9 @@ jobs:
       - name: Install sshpass
         run: sudo apt-get update && sudo apt-get install -y sshpass
       - name: Ssh
-        run: ssh-keyscan -t rsa ${{secrets.REMOTE_HOST}} > ~/.ssh/known_hosts
+        run: |
+          mkdir -p ~/.ssh/
+          ssh-keyscan -t rsa ${{secrets.REMOTE_HOST}} > ~/.ssh/known_hosts
       - name: Git Pull
         run: |
           sshpass -p "${{secrets.REMOTE_USER}}" ssh ${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}} \
