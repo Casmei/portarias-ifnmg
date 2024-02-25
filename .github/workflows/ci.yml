@@ -22,5 +22,5 @@ jobs:
       - name: Git Pull
         run: |
           sshpass -p "${{secrets.REMOTE_USER}}" ssh ${{secrets.REMOTE_USER}}@${{secrets.REMOTE_HOST}} \
-          'cd ${{secrets.REMOTE_TARGET}} && git pull'
+          'cd ${{secrets.REMOTE_TARGET}} && sudo git pull'
 
