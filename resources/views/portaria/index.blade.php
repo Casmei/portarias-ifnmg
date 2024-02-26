@@ -23,7 +23,7 @@
                                 </span>
                                 <input
                                     class="placeholder:italic placeholder:text-sl   ate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-indigo-300 focus:ring-indigo-300 focus:ring-1 sm:text-sm"
-                                    placeholder="Buscar servidor pelo nome" type="text" name="search" />
+                                    placeholder="Buscar portaria pelo código" type="text" name="search" />
                             </label>
                         </form>
                     </div>

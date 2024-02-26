@@ -8,9 +8,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: blog
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: portarias
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
 
   pgadmin:
     image: dpage/pgadmin4
@@ -22,20 +22,3 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: hanieasemi76@gmail.com
       PGADMIN_DEFAULT_PASSWORD: password
-
-  php:
-    build: .
-    tty: true
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-        - caddy_data:/data
-        - caddy_config:/config
-        - .:/app
-
-volumes:
-  caddy_data:
-  caddy_config:
