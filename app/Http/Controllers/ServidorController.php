@@ -39,7 +39,7 @@ class ServidorController extends Controller
         if($search){
             $servidores = User::where([
                 ['name','like','%'.$search.'%']
-            ])->get();
+            ])->paginate(10);
             return view('servidor.index', ['servidores' => $servidores,'search' => $search]);
         }else{
             $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
