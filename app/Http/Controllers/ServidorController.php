@@ -286,6 +286,7 @@ class ServidorController extends Controller
             'servidor' => $servidor,
             'position' => $position,
             'funcao' => $funcao,
+            'portarias' => $portarias,
             'totalPortarias' => $totalPortarias,
             'totalAtivas' => $totalAtivas,
             'porcentagemAtivas' => number_format($porcentagemAtivas, 2),
