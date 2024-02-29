@@ -21,7 +21,7 @@ class OrdinanceController extends Controller
     public function index(): View
     {
         Gate::authorize('acesso-restrito-servidor');
-        $portarias = Ordinance::all()->where('visibility', 1);
+        $portarias = Ordinance::all();
 
         foreach ($portarias as $portaria) {
             $now = Carbon::now();
@@ -53,7 +53,7 @@ class OrdinanceController extends Controller
         if($search){
             $portarias = Ordinance::where([
                 ['number','like','%'.$search.'%']
-            ])->where('visibility', 1)->get();
+            ])->get();
 
             foreach ($portarias as $portaria) {
                 $now = Carbon::now();
