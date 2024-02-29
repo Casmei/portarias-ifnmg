@@ -45,7 +45,6 @@ class OrdinanceController extends Controller
      */
     public function searchName()
     {
-        #Gate::authorize('acesso-restrito-servidor');
 
         $search = request('search');
         $user = auth()->user();
