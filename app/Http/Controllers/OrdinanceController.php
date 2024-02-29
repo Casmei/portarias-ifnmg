@@ -21,7 +21,7 @@ class OrdinanceController extends Controller
     public function index(): View
     {
         Gate::authorize('acesso-restrito-servidor');
-        $portarias = Ordinance::all()->where('visibility', 1);
+        $portarias = Ordinance::all();
 
         foreach ($portarias as $portaria) {
             $now = Carbon::now();
@@ -45,15 +45,14 @@ class OrdinanceController extends Controller
      */
     public function searchName()
     {
-        #Gate::authorize('acesso-restrito-servidor');
+        Gate::authorize('acesso-restrito-servidor');
 
         $search = request('search');
-        $user = auth()->user();
 
         if($search){
             $portarias = Ordinance::where([
                 ['number','like','%'.$search.'%']
-            ])->where('visibility', 1)->get();
+            ])->get();
 
             foreach ($portarias as $portaria) {
                 $now = Carbon::now();
@@ -67,7 +66,7 @@ class OrdinanceController extends Controller
                 }
             }
 
-            return view('dashboard', ['portarias' => $portarias,'search' => $search, "user" => $user]);
+            return view('portaria.index', ['portarias' => $portarias,'search' => $search]);
         }else{
             $portarias = Ordinance::paginate(10);
             foreach ($portarias as $portaria) {
@@ -81,7 +80,7 @@ class OrdinanceController extends Controller
                     $portaria->status = false;
                 }
             }
-            return view('dashboard', ['portarias' => $portarias, 'user' => $user]);
+            return view('portaria.index', ['portarias' => $portarias]);
         }
     }
 
