@@ -62,7 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('servidores')->group(function () {
         Route::get('/', [ServidorController::class, 'index'])->name('servidores');
-        Route::get('/buscar',[ServidorController::class,'searchName'])->name('servidores.search');
+        Route::post('/buscar',[ServidorController::class,'searchName'])->name('servidores.search');
 
         Route::get('/adicionar', [ServidorController::class, 'create'])->name('servidores.create');
         Route::post('/adicionar', [ServidorController::class, 'store'])->name('servidores.store');

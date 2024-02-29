@@ -1,66 +1,84 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Portarias Midit 
+Projeto para gestão de portarias e servidores.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Configuração do Projeto
+Siga as instruções abaixo para configurar e executar o projeto em sua máquina.
 
-## About Laravel
+### Pré-requisitos
+- Git
+- Docker (opcional)
+- Composer
+- PHP
+- node.js
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Instalação
+```sh
+    # Clone o repositório
+    > git clone https://github.com/Casmei/portarias-ifnmg.git
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+    # Acesse a pasta do projeto
+    > cd portarias-ifnmg
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    # Crie o arquivo de configuração das variáveis de ambiente (Linux)
+    > cp .env.example .env
 
-## Learning Laravel
+    # Crie o arquivo de configuração das variáveis de ambiente (Windows)
+    > copy .env.example .env
+```
+### Iniciando o Projeto
+```sh
+    # Instale as dependências do projeto com o Composer
+    > composer install
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    # Gere a chave de segurança requisitada pelo Laravel
+    > php artisan key:generate
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+    # Execute as migrações do banco de dados ( Valide nas envs as credenciais de conexão com o banco caso dê erro )
+    > php artisan migrate --seed
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    # Inicie o sistema
+    > php artisan serve
 
-## Laravel Sponsors
+    # Em outro terminal rode os seguintes comandos
+    > npm install
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    > npm run dev
+```
 
-### Premium Partners
+### Banco de Dados
+Como eu falei anteriormente, é necessário que você valide nas envs a conexão do seu banco. Porém, para facilitar o processo, existe um `docker-compose.yml` contendo uma imagem do postgres, para usa-la, basta rodar esse comando:
+```sh
+    # Subindo o docker
+    > docker-compose up --build
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### Configuração finalizada ✅
+Agora basta acessar essa url: http://127.0.0.1:8000
 
-## Contributing
+# Algumas imagens do projeto
+- Login
+  ![image](https://github.com/Casmei/portarias-ifnmg/assets/68354933/a30ff6a0-daed-41f9-9807-6f3df04b5b94)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Tela inicial do Administrador e Gestor
+![image](https://github.com/Casmei/portarias-ifnmg/assets/68354933/9f367f8c-c05c-4195-86cd-3d73d2f9e257)
 
-## Code of Conduct
+- Listagem de Servidores
+![image](https://github.com/Casmei/portarias-ifnmg/assets/68354933/f8baec2d-4a79-46ae-8746-8970f4d570d0)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Criação de um servidor
+![image](https://github.com/Casmei/portarias-ifnmg/assets/68354933/829b7d1c-9ed0-49b4-b2f3-ca0356d1f98c)
 
-## Security Vulnerabilities
+- Criação de vários servidores através de um arquivo csv
+![image](https://github.com/Casmei/portarias-ifnmg/assets/68354933/f897d936-f1e1-4567-8b15-afe8951e481c)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Criação de uma portaria
+![image](https://github.com/Casmei/portarias-ifnmg/assets/68354933/343c4a93-095a-4b1f-9457-a8f9110b55c5)
 
-## License
+- Listagem de portarias
+![image](https://github.com/Casmei/portarias-ifnmg/assets/68354933/aa81c6cb-3560-45d5-b33b-76e81d4c3d13)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+
+
+
