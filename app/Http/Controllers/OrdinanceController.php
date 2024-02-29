@@ -149,7 +149,8 @@ class OrdinanceController extends Controller
         }
 
         if ($request->hasFile('pdf_file')) {
-            $pdfPath = $request->file('pdf_file')->store('public/portarias');
+            $name = 'portaria-'.$ordinance->number.'-'.date('Y', strtotime($ordinance->start_date));
+            $pdfPath = $request->file('pdf_file')->storeAs('public/portarias', $name);
             $pdfUrl = Storage::url($pdfPath);
             $ordinance->pdf_url = $pdfUrl;
         }
