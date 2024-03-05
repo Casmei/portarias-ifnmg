@@ -231,8 +231,6 @@ class OrdinanceController extends Controller
 
     public function details(string $id)
     {
-        Gate::authorize('acesso-restrito-servidor');
-
         $portaria = Ordinance::where('id', $id)->first();
 
         $servidores = Ordinance::select('ordinances.*')
