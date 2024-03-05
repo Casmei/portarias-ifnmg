@@ -11,7 +11,7 @@
                 @if ($user->role_id == 1)
                     <div class="lg:flex m-5 items-center">
                         <div class=" mb-5 lg:mb-0 grow lg:w-8/12 me-5">
-                            <form action="{{ route('servidores.search') }}" method='get'>
+                            <form action="{{ route('portarias.search') }}" method='get'>
                                 @csrf
                                 <label class="relative block">
                                     <span class="sr-only">Search</span>
