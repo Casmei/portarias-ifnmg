@@ -103,7 +103,7 @@
         </div>
 
         <div class="flex items-center gap-4 mt-10">
-            <x-primary-button id='btn-save'>{{ __('Salvar') }}</x-primary-button>
+            <x-primary-button>{{ __('Salvar') }}</x-primary-button>
         </div>
     </form>
 </section>
@@ -117,17 +117,6 @@
             endDateContainer.style.display = 'none';
         } else {
             endDateContainer.style.display = 'block';
-        }
-    });
-
-    const file = document.getElementById('file');
-    const btnSAve = document.getElementById('btn-save');
-
-    file.addEventListener('change', function() {
-        if (this.checked == '') {
-            btnSAve.style.display = 'block';
-        } else {
-            btnSAve.style.display = 'none';
         }
     });
 </script>
