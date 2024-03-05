@@ -49,10 +49,11 @@ class OrdinanceController extends Controller
 
         $search = request('search');
 
+
         if($search){
-            $portarias = Ordinance::where([
-                ['number','like','%'.$search.'%']
-            ])->get();
+            $portarias = Ordinance::where('number','LIKE','%'.$search.'%')
+                ->orWhere('campus','LIKE','%'.$search.'%')
+                ->get();
 
             foreach ($portarias as $portaria) {
                 $now = Carbon::now();
