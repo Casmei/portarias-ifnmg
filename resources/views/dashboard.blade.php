@@ -1,3 +1,8 @@
+@php
+    use App\Enums\UserRole;
+    $userRole = $user->role_id;
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -8,7 +13,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                @if ($user->role_id == 1)
+
+                @if ($userRole === UserRole::SERVIDOR)
                     <div class="lg:flex m-5 items-center">
                         <div class=" mb-5 lg:mb-0 grow lg:w-8/12 me-5">
                             <form action="{{ route('servidores.search') }}" method='get'>
@@ -29,110 +35,102 @@
                             </form>
                         </div>
 
-                        @if ($user->role_id !== 1)
-                        <div class="space-x-3 items-start flex justify-end">
-                            <a href="{{ route('servidores.upload') }}">
-                                <x-secondary-button class="w-30">
-                                    <svg class='mr-2' xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z" />
-                                    </svg>
-                                    {{ __('Importar CSV') }}
+                        @if ($userRole === UserRole::GESTOR || $userRole === UserRole::ADMIN)
+                            <div class="space-x-3 items-start flex justify-end">
+                                <a href="{{ route('servidores.upload') }}">
+                                    <x-secondary-button class="w-30">
+                                        <svg class='mr-2' xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z" />
+                                        </svg>
+                                        {{ __('Importar CSV') }}
                                     </x-primary-button>
-                            </a>
-                            <a href="{{ route('servidores.store') }}">
-                                <x-primary-button class="w-30">
-                                    {{ __('Adicionar +') }}
-                                </x-primary-button>
-                            </a>
-                        </div>
+                                </a>
+                                <a href="{{ route('servidores.store') }}">
+                                    <x-primary-button class="w-30">
+                                        {{ __('Adicionar +') }}
+                                    </x-primary-button>
+                                </a>
+                            </div>
                         @endif
-
                     </div>
-                    <div class="flex flex-col mx-5">
-                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8 pb-10">
-                                <div class="overflow-hidden">
-                                    <table class="min-w-full text-left text-sm font-light">
-                                        <thead
-                                            class="border-b font-semibold text-gray-800 leading-tight border-gray-200">
-                                            <tr>
-                                                <th scope="col" class="px-6 py-4">CÓDIGO</th>
-                                                <th scope="col" class="px-6 py-4">CAMPUS</th>
-                                                <th scope="col" class="px-6 py-4">DATA DE INÍCIO</th>
-                                                <th scope="col" class="px-6 py-4">DATA DE FIM</th>
-                                                <th scope="col" class="px-6 py-4">STATUS</th>
-                                                <th scope="col" class="px-6 py-4 text-center">VISIBILIDADE</th>
+                @endif
+
+                <div class="flex flex-col mx-5">
+                    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8 pb-10">
+                            <div class="overflow-hidden">
+                                <table class="min-w-full text-left text-sm font-light">
+                                    <thead class="border-b font-semibold text-gray-800 leading-tight border-gray-200">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-4">CÓDIGO</th>
+                                            <th scope="col" class="px-6 py-4">CAMPUS</th>
+                                            <th scope="col" class="px-6 py-4">DATA DE INÍCIO</th>
+                                            <th scope="col" class="px-6 py-4">DATA DE FIM</th>
+                                            <th scope="col" class="px-6 py-4">STATUS</th>
+                                            <th scope="col" class="px-6 py-4 text-center">VISIBILIDADE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($portarias as $portaria)
+                                            <tr class="border-b border-gray-100">
+                                                <td class="whitespace-nowrap px-6 py-4 font-medium">
+                                                    {{ $portaria->number }}</td>
+                                                <td class="whitespace-nowrap px-6 py-4">{{ $portaria->campus }}</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    {{ $portaria->startDateFormatted }}</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    {{ $portaria->endDateFormatted ?? '-' }}</td>
+                                                <td class="whitespace-nowrap px-6 py-4">
+                                                    @if ($portaria->status)
+                                                        <span
+                                                            class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-green-900 dark:text-green-300">Ativa</span>
+                                                    @else
+                                                        <span
+                                                            class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-red-900 dark:text-red-300">Inativa</span>
+                                                    @endif
+                                                </td>
+
+                                                <td class="whitespace-nowrap px-6 py-4 text-center">
+                                                    @if ($portaria->visibility)
+                                                        <span
+                                                            class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-blue-900 dark:text-blue-300">Pública</span>
+                                                    @else
+                                                        <span
+                                                            class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-gray-700 dark:text-gray-300">Privada</span>
+                                                    @endif
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                                            @foreach ($portarias as $portaria)
-                                                <tr class="border-b border-gray-100">
-                                                    <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        {{ $portaria->number }}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{ $portaria->campus }}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">
-                                                        {{ $portaria->startDateFormatted }}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">
-                                                        {{ $portaria->endDateFormatted ?? '-' }}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">
-                                                        @if ($portaria->status)
-                                                            <span
-                                                                class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-green-900 dark:text-green-300">Ativa</span>
-                                                        @else
-                                                            <span
-                                                                class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-red-900 dark:text-red-300">Inativa</span>
-                                                        @endif
-                                                    </td>
-
-                                                    <td class="whitespace-nowrap px-6 py-4 text-center">
-                                                        @if ($portaria->visibility)
-                                                            <span
-                                                                class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-blue-900 dark:text-blue-300">Pública</span>
-                                                        @else
-                                                            <span
-                                                                class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-gray-700 dark:text-gray-300">Privada</span>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                @if ($userRole === UserRole::GESTOR || $userRole === UserRole::ADMIN)
+                    <div class="py-12">
+                        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                            <div class="flex justify-between space-x-6">
+                                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                                    <p>Portarias Totais</p>
+                                    <h1 class="text-6xl mt-2 font-bold">{{ $totalPortarias }}</h1>
                                 </div>
-                                {{-- @if (request()->query('search') === null)
-                                <footer class="mt-10">
-                                    {{ $servidores->links() }}
-                                </footer>
-                            @endif --}}
+                                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                                    <p>Portarias Ativas</p>
+                                    <h1 class="text-6xl mt-2 font-bold">{{ $porcentagemAtivas }}%</h1>
+                                </div>
+                                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
+                                    <p>Portarias Finalizadas</p>
+                                    <h1 class="text-6xl mt-2 font-bold">{{ $porcentagemFinalizadas }}%</h1>
+                                </div>
                             </div>
                         </div>
                     </div>
                 @endif
             </div>
-            @if ($user->role_id == 3 || $user->role_id == 2)
-                <div class="py-12">
-                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-
-                        <div class="flex justify-between space-x-6">
-                            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
-                                <p>Portarias Totais</p>
-                                <h1 class="text-6xl mt-2 font-bold">{{ $totalPortarias }}</h1>
-                            </div>
-                            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
-                                <p>Portarias Ativas</p>
-                                <h1 class="text-6xl mt-2 font-bold">{{ $porcentagemAtivas }}%</h1>
-                            </div>
-                            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
-                                <p>Portarias Finalizadas</p>
-                                <h1 class="text-6xl mt-2 font-bold">{{ $porcentagemFinalizadas }}%</h1>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            @endif
         </div>
     </div>
 </x-app-layout>
