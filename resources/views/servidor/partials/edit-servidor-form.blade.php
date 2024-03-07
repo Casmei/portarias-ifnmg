@@ -20,19 +20,19 @@
 
         <div>
             <x-input-label for="cpf" :value="__('CPF')" />
-            <x-text-input id="cpf" name="cpf" type="text" :value="old('cpf', $servidor->cpf)" class="mt-1 block w-full" />
+            <x-text-input id="cpf" name="cpf" type="text" :value="old('cpf', $servidor->cpf)" class="mt-1 block w-full text-gray-500" readonly="readonly" />
             <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
         </div>
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $servidor->email)" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full text-gray-500" :value="old('email', $servidor->email)" readonly="readonly" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <div>
             <x-input-label for="siape" :value="__('Matrícula do SIAPE')" />
-            <x-text-input id="siape" name="siape" type="text" class="mt-1 block w-full" :value="old('siape', $servidor->siape)" />
+            <x-text-input id="siape" name="siape" type="text" class="mt-1 block w-full text-gray-500" :value="old('siape', $servidor->siape)" readonly="readonly" />
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 

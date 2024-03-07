@@ -102,7 +102,7 @@ class OrdinanceController extends Controller
         Gate::authorize('acesso-restrito-servidor');
 
         $request->validate([
-            'ordinance_number' => 'required',
+            'ordinance_number' => 'required|unique:ordinances',
             'start_date' => 'required|date',
             'campus' => 'required',
             'description' => 'required',
@@ -110,6 +110,7 @@ class OrdinanceController extends Controller
             'servidores' => 'required|array',
         ], [
             'ordinance_number.required' => 'O número da portaria é obrigatório.',
+            'ordinance_number.unique' => 'O número da portaria já foi cadastrado.',
             'start_date.required' => 'A data de início é obrigatória.',
             'start_date.date' => 'A data de início deve ser uma data válida.',
             'campus.required' => 'O campus é obrigatório.',
