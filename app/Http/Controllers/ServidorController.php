@@ -111,22 +111,24 @@ class ServidorController extends Controller
         $request->validate(
             [
                 'name'  => 'required|string',
-                'email'  => 'required|email',
-                'cpf' => 'required|string',
-                'siape' => 'required|string',
+                'email'  => 'required|email|unique:users',
+                'cpf' => 'required|string|unique:users',
+                'siape' => 'required|string|unique:users',
                 'position_id' => 'required|numeric',
                 'funcao_id' => 'required|numeric'
 
             ],
             [
-                'name.required' => 'Campo nome é obrigatório',
-                'email.email' => 'Necessário um email válido',
-                'email.required' => 'Campo email é obrigatório',
-                'cpf.required' => 'Campo cpf é obrigatório',
-                'siape.required' => 'Campo siape é obrigatório',
-                'position_id.numeric' => 'Selecione o cargo!',
-                'funcao_id.numeric' => 'Selecione a função!'
-
+                'name.required' => 'Campo nome é obrigatório.',
+                'email.email' => 'Necessário um email válido.',
+                'email.required' => 'Campo email é obrigatório.',
+                'email.unique' => 'Esse e-mail já está sendo usado.',
+                'cpf.required' => 'Campo cpf é obrigatório.',
+                'cpf.unique' => 'Esse cpf já está cadastrado.',
+                'siape.required' => 'Campo siape é obrigatório.',
+                'siape.unique' => 'Esse siape já está cadastrado.',
+                'position_id.numeric' => 'Selecione o cargo.',
+                'funcao_id.numeric' => 'Selecione a função.'
             ]
         );
 
@@ -308,18 +310,11 @@ class ServidorController extends Controller
         $validatedData = $request->validate(
             [
                 'name' => 'required|string',
-                'email' => 'required|email',
-                'cpf' => 'required|string',
-                'siape' => 'required|string',
                 'position_id' => 'required|numeric',
                 'funcao_id' => 'required|numeric'
             ],
             [
                 'name.required' => 'Campo nome é obrigatório',
-                'email.email' => 'Necessário um email válido',
-                'email.required' => 'Campo email é obrigatório',
-                'cpf.required' => 'Campo cpf é obrigatório',
-                'siape.required' => 'Campo siape é obrigatorio',
                 'position_id.numeric' => 'Selecione o cargo!',
                 'funcao_id.numeric' => 'Selecione a função'
             ]
@@ -328,9 +323,6 @@ class ServidorController extends Controller
         $newData = User::find($id);
 
         $newData->name = $validatedData['name'];
-        $newData->cpf = $validatedData['cpf'];
-        $newData->email = $validatedData['email'];
-        $newData->siape = $validatedData['siape'];
         $newData->position_id = $validatedData['position_id'];
         $newData->funcao_id = $validatedData['funcao_id'];
 

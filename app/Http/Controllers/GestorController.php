@@ -6,7 +6,6 @@ use App\Enums\UserRole;
 use App\Jobs\SendEmailJob;
 use App\Models\Position;
 use App\Models\User;
-use League\Csv\Reader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -45,15 +44,17 @@ class GestorController extends Controller
         Gate::authorize('acesso-permitido-admin');
         $request->validate(
             [
-                'name'  => 'required|string',
-                'email'  => 'required|email',
-                'cpf' => 'required|string',
+                'name' => 'required|string',
+                'email' => 'required|email|unique:users',
+                'cpf' => 'required|string|unique:users',
             ],
             [
-                'name.required' => 'Campo nome é obrigatório',
-                'email.email' => 'Necessário um email válido',
-                'email.required' => 'Campo email é obrigatório',
-                'cpf.required' => 'Campo cpf é obrigatório',
+                'name.required' => 'Campo nome é obrigatório.',
+                'email.email' => 'Necessário um email válido.',
+                'email.unique' => 'E-mail já cadastrado.',
+                'email.required' => 'Campo email é obrigatório.',
+                'cpf.required' => 'Campo cpf é obrigatório.',
+                'cpf.unique' => 'Cpf já cadastrado.',
             ]
         );
 
@@ -118,14 +119,16 @@ class GestorController extends Controller
         $validatedData = $request->validate(
             [
                 'name' => 'required|string',
-                'email' => 'required|email',
-                'cpf' => 'required|string',
+                'email' => 'required|email|unique:users',
+                'cpf' => 'required|string|unique:users',
             ],
             [
-                'name.required' => 'Campo nome é obrigatório',
-                'email.email' => 'Necessário um email válido',
-                'email.required' => 'Campo email é obrigatório',
-                'cpf.required' => 'Campo cpf é obrigatório',
+                'name.required' => 'Campo nome é obrigatório.',
+                'email.email' => 'Necessário um email válido.',
+                'email.unique' => 'E-mail já cadastrado.',
+                'email.required' => 'Campo email é obrigatório.',
+                'cpf.required' => 'Campo cpf é obrigatório.',
+                'cpf.unique' => 'Cpf já cadastrado.',
             ]
         );
 
