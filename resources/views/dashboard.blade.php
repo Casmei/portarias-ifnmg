@@ -29,6 +29,7 @@
                             </form>
                         </div>
 
+                        @if ($user->role_id !== 1)
                         <div class="space-x-3 items-start flex justify-end">
                             <a href="{{ route('servidores.upload') }}">
                                 <x-secondary-button class="w-30">
@@ -46,6 +47,7 @@
                                 </x-primary-button>
                             </a>
                         </div>
+                        @endif
 
                     </div>
                     <div class="flex flex-col mx-5">
