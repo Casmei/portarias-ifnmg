@@ -101,7 +101,9 @@ class GestorController extends Controller
         if($search){
             $gestores = User::where([
                 ['name','like','%'.$search.'%']
-            ])->get();
+            ])
+            ->where('role_id', UserRole::GESTOR)
+            ->get();
             return view('gestor.index', ['gestores' => $gestores,'search' => $search]);
         }else{
             $gestores = User::where('role_id', UserRole::GESTOR)->paginate(10);
