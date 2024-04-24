@@ -32,8 +32,8 @@
                     @endauth
                 </div>
             @endif
-            <div class="py-12 justify-center">
-                <h1 class="text-center  mt-20 text-4xl">Ranking de portarias</h1>
+            <div class="justify-center">
+                <h1 class="text-center text-4xl">Ranking de portarias</h1>
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-20">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="flex flex-col mx-5">
