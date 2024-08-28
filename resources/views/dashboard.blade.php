@@ -148,11 +148,11 @@
                             </div>
                             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
                                 <p>Portarias Ativas</p>
-                                <h1 class="text-6xl mt-2 font-bold">{{ $porcentagemAtivas }}%</h1>
+                                <h1 class="text-6xl mt-2 font-bold">{{ number_format($porcentagemAtivas, 0, ',', '') }}%</h1>
                             </div>
                             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg w-full">
                                 <p>Portarias Finalizadas</p>
-                                <h1 class="text-6xl mt-2 font-bold">{{ $porcentagemFinalizadas }}%</h1>
+                                <h1 class="text-6xl mt-2 font-bold">{{ number_format($porcentagemFinalizadas, 0, ',', '') }}%</h1>
                             </div>
 
                         </div>

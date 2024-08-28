@@ -13,12 +13,6 @@
         </div>
 
         <div>
-            <x-input-label for="cpf" :value="__('CPF')" />
-            {{ $servidor->cpf }}
-            <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
-        </div>
-
-        <div>
             <x-input-label for="email" :value="__('Email')" />
             {{ $servidor->email }}
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
