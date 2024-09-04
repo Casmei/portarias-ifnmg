@@ -33,7 +33,7 @@
                 </div>
             @endif
             <div class="py-12 justify-center">
-                <h1 class="text-center  mt-20 text-4xl">Ranking de portarias</h1>
+                <h1 class="text-center  mt-20 text-4xl">Portarias vigentes</h1>
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-20">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="flex flex-col mx-5">
@@ -43,24 +43,35 @@
                                         <table class="min-w-full text-left text-sm font-light mx-auto">
                                             <thead class="border-b font-semibold text-gray-800 leading-tight border-gray-200">
                                                 <tr class=" bg-black text-white">
-                                                    <th  scope="col" class="px-6 py-4 text-center"> Posição</th>
-                                                    <th scope="col" class="px-6 py-4 text-center">Nome do Servidor</th>
-                                                    <th scope="col" class="px-6 py-4 text-center">Quantidade de portarias</th>
+                                                    <th  scope="col" class="px-6 py-4 text-center">Número da Portaria</th>
+                                                    <th scope="col" class="px-6 py-4 text-center">Descrição</th>
+                                                    <th scope="col" class="px-6 py-4 text-center">Documento</th>
 
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                     @php $i = 1 @endphp
-                                                @foreach ($servidores as $servidor)
+                                                @foreach ($portarias as $portaria)
                                                     <tr class="border-b border-gray-100 text-center">
                                                         <td class="whitespace-nowrap px-6 py-4 font-medium text-center text-center">
-                                                            <a href="{{ route('servidor.listOrdinance', ['id' => $servidor->id]) }}">{{ $i }}</a>
+                                                            <a href="{{ route('servidor.listOrdinance', ['id' => $portaria->id]) }}">{{ $portaria->number ? $portaria->number : ' ' }}</a>
                                                         </td>
                                                         <td class="whitespace-nowrap px-6 py-4 font-medium text-center">
-                                                            <a href="{{ route('servidor.listOrdinance', ['id' => $servidor->id]) }}">{{ $servidor->name }}</a>
+                                                            <a href="{{ route('servidor.listOrdinance', ['id' => $portaria->id]) }}">{{ $portaria->description }}</a>
                                                         </td>
                                                         <td class="whitespace-nowrap px-6 py-4">
-                                                            <a href="{{ route('servidor.listOrdinance', ['id' => $servidor->id]) }}">{{ $servidor->ordinances_count }}</a>
+                                                            <a href="{{ route('ordinance.download', ['id' => $portaria->id]) }}"
+                                                                class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase w-24">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor" class="bi bi-download"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path
+                                                                        d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
+                                                                    <path
+                                                                        d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
+                                                                </svg>
+                                                                <p>Baixar</p>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                     @php $i++  @endphp

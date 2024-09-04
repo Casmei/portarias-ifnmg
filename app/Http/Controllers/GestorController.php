@@ -29,7 +29,7 @@ class GestorController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create():View
+    public function create(): View
     {
         Gate::authorize('acesso-permitido-admin');
         $positions = Position::all();
@@ -47,13 +47,11 @@ class GestorController extends Controller
             [
                 'name'  => 'required|string',
                 'email'  => 'required|email',
-                'cpf' => 'required|string',
             ],
             [
                 'name.required' => 'Campo nome é obrigatório',
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
-                'cpf.required' => 'Campo cpf é obrigatório',
             ]
         );
 
@@ -62,7 +60,6 @@ class GestorController extends Controller
         $server = new User();
         $server->name = $request->input('name');
         $server->email = $request->input('email');
-        $server->cpf = $request->input('cpf');
         $server->password = Hash::make($password);
         $server->role_id = UserRole::GESTOR;
         $server->save();
@@ -98,12 +95,12 @@ class GestorController extends Controller
     {
         Gate::authorize('acesso-permitido-admin');
         $search = request('search');
-        if($search){
+        if ($search) {
             $gestores = User::where([
-                ['name','like','%'.$search.'%']
+                ['name', 'like', '%' . $search . '%']
             ])->get();
-            return view('gestor.index', ['gestores' => $gestores,'search' => $search]);
-        }else{
+            return view('gestor.index', ['gestores' => $gestores, 'search' => $search]);
+        } else {
             $gestores = User::where('role_id', UserRole::GESTOR)->paginate(10);
             return view('gestor.index', ['gestores' => $gestores]);
         }
@@ -119,20 +116,17 @@ class GestorController extends Controller
             [
                 'name' => 'required|string',
                 'email' => 'required|email',
-                'cpf' => 'required|string',
             ],
             [
                 'name.required' => 'Campo nome é obrigatório',
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
-                'cpf.required' => 'Campo cpf é obrigatório',
             ]
         );
 
         $newData = User::find($id);
 
         $newData->name = $validatedData['name'];
-        $newData->cpf = $validatedData['cpf'];
         $newData->email = $validatedData['email'];
 
         $newData->save();

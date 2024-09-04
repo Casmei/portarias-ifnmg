@@ -21,27 +21,26 @@ class ServidorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():View
+    public function index(): View
     {
         Gate::authorize('acesso-restrito-servidor');
         $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
         return view('servidor.index', ['servidores' => $servidores]);
-
     }
 
-      /**
+    /**
      * Search Name the specified resource from storage.
      */
     public function searchName()
     {
         Gate::authorize('acesso-restrito-servidor');
         $search = request('search');
-        if($search){
+        if ($search) {
             $servidores = User::where([
-                ['name','like','%'.$search.'%']
+                ['name', 'like', '%' . $search . '%']
             ])->paginate(10);
-            return view('servidor.index', ['servidores' => $servidores,'search' => $search]);
-        }else{
+            return view('servidor.index', ['servidores' => $servidores, 'search' => $search]);
+        } else {
             $servidores = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
             return view('servidor.index', ['servidores' => $servidores]);
         }
@@ -49,7 +48,7 @@ class ServidorController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create():View
+    public function create(): View
     {
         Gate::authorize('acesso-restrito-servidor');
         $positions = Position::all();
@@ -88,7 +87,6 @@ class ServidorController extends Controller
                 $server = new User();
                 $server->name = $row['name'];
                 $server->email = $row['email'];
-                $server->cpf = $row['cpf'];
                 $server->password = Hash::make($password);
                 $server->position_id = $row['position_id'];
                 $server->funcao_id = $row['funcao_id'];
@@ -112,7 +110,6 @@ class ServidorController extends Controller
             [
                 'name'  => 'required|string',
                 'email'  => 'required|email',
-                'cpf' => 'required|string',
                 'siape' => 'required|string',
                 'position_id' => 'required|numeric',
                 'funcao_id' => 'required|numeric'
@@ -122,7 +119,6 @@ class ServidorController extends Controller
                 'name.required' => 'Campo nome é obrigatório',
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
-                'cpf.required' => 'Campo cpf é obrigatório',
                 'siape.required' => 'Campo siape é obrigatório',
                 'position_id.numeric' => 'Selecione o cargo!',
                 'funcao_id.numeric' => 'Selecione a função!'
@@ -135,7 +131,6 @@ class ServidorController extends Controller
         $server = new User();
         $server->name = $request->input('name');
         $server->email = $request->input('email');
-        $server->cpf = $request->input('cpf');
         $server->password = Hash::make($password);
         $server->position_id = $request->input('position_id');
         $server->funcao_id = $request->input('funcao_id');
@@ -154,7 +149,7 @@ class ServidorController extends Controller
     {
         $user = auth()->user();
 
-        if($user->role_id == UserRole::SERVIDOR) {
+        if ($user->role_id == UserRole::SERVIDOR) {
             $portarias = Ordinance::find($user->ordinances()->get());
             foreach ($portarias as $portaria) {
                 $now = Carbon::now();
@@ -177,7 +172,7 @@ class ServidorController extends Controller
             ]);
         }
 
-        if($user->role_id == UserRole::ADMIN || $user->role_id == UserRole::GESTOR ) {
+        if ($user->role_id == UserRole::ADMIN || $user->role_id == UserRole::GESTOR) {
             $portarias = Ordinance::all();
             foreach ($portarias as $portaria) {
                 $now = Carbon::now();
@@ -200,7 +195,7 @@ class ServidorController extends Controller
             $totalFinalizadas = 0;
             $porcentagemFinalizadas = 0;
 
-            if($totalPortarias > 0) {
+            if ($totalPortarias > 0) {
 
                 $portariasAtivas = $portarias->filter(function ($portaria) {
                     return now()->lessThan($portaria->end_date);
@@ -309,7 +304,6 @@ class ServidorController extends Controller
             [
                 'name' => 'required|string',
                 'email' => 'required|email',
-                'cpf' => 'required|string',
                 'siape' => 'required|string',
                 'position_id' => 'required|numeric',
                 'funcao_id' => 'required|numeric'
@@ -318,7 +312,6 @@ class ServidorController extends Controller
                 'name.required' => 'Campo nome é obrigatório',
                 'email.email' => 'Necessário um email válido',
                 'email.required' => 'Campo email é obrigatório',
-                'cpf.required' => 'Campo cpf é obrigatório',
                 'siape.required' => 'Campo siape é obrigatorio',
                 'position_id.numeric' => 'Selecione o cargo!',
                 'funcao_id.numeric' => 'Selecione a função'
@@ -328,7 +321,6 @@ class ServidorController extends Controller
         $newData = User::find($id);
 
         $newData->name = $validatedData['name'];
-        $newData->cpf = $validatedData['cpf'];
         $newData->email = $validatedData['email'];
         $newData->siape = $validatedData['siape'];
         $newData->position_id = $validatedData['position_id'];

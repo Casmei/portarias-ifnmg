@@ -55,7 +55,6 @@
                                     <thead class="border-b font-semibold text-gray-800 leading-tight border-gray-200">
                                         <tr>
                                             <th scope="col" class="px-6 py-4">Nome</th>
-                                            <th scope="col" class="px-6 py-4">CPF</th>
                                             <th scope="col" class="px-6 py-4">Email</th>
                                             <th scope="col" class="px-6 py-4">SIAPE</th>
                                             <th scope="col" class="px-6 py-4">AÇÕES</th>
@@ -67,7 +66,6 @@
                                             <tr class="border-b border-gray-100">
                                                 <td class="whitespace-nowrap px-6 py-4 font-medium">
                                                     {{ $servidor->name }}</td>
-                                                <td class="whitespace-nowrap px-6 py-4">{{ $servidor->cpf }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">{{ $servidor->email }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4">{{ $servidor->siape }}</td>
                                                 <td class="whitespace-nowrap px-6 py-4 flex space-x-2">
