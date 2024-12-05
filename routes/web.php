@@ -126,7 +126,7 @@ Route::get('/dashboard', [ServidorController::class, 'dashboard'])->middleware([
 Route::get('/gestores', [GestorController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('gestores');
-Route::get('/ranking',[MemberOrdinanceController::class,'ranking'])->name('ranking.portarias')->middleware(['auth', 'verified']);
+Route::any('/ranking',[MemberOrdinanceController::class,'ranking'])->name('ranking.portarias')->middleware(['auth', 'verified']);
 
 //TODO: Listar todos os gestores cadastrados no sistema
 //TODO: Salvar novos gestores por meio de um formulário

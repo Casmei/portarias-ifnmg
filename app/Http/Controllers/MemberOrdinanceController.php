@@ -74,9 +74,15 @@ class MemberOrdinanceController extends Controller
         ]);
     }
     public function ranking(){
-        $portarias = Ordinance::all()->sortByDesc('created_at')->where('visibility', true);
-        return view('portaria.ranking', [
-            'portarias' => $portarias
-        ]);
+        if (request('search')) {
+            $search = request('search');
+            $portarias = Ordinance::where('number', 'like', '%' . $search . '%')
+                      ->orWhere('description', 'like', '%' . $search . '%')
+                      ->paginate(10);
+            return view('portaria.ranking', ['portarias' => $portarias]);
+        } else {
+            $portarias = Ordinance::all()->sortByDesc('created_at')->where('visibility', true);
+            return view('portaria.ranking', ['portarias' => $portarias]);
+        }
     }
 }

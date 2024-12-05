@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="lg:flex m-5 items-center">
                     <div class=" mb-5 lg:mb-0 grow lg:w-8/12 me-5">
-                        <form action="{{ route('servidores.search') }}" method='post'>
+                        <form action="{{ route('ranking.portarias') }}" method='post'>
                             @csrf
                             <label class="relative block">
                                 <span class="sr-only">Search</span>
