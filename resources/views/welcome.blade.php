@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://unpkg.com/mistral-ui@1.x.x/dist/cdn.min.js"></script>
@@ -38,7 +39,6 @@
                 @endauth
             </div>
         @endif
-
         <div class="py-12 justify-center">
             <h1 class="text-center mt-20 text-4xl text-gray-800 mb-6">Portarias Vigentes</h1>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
