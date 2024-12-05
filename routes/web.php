@@ -8,7 +8,7 @@ use App\Http\Controllers\MemberOrdinanceController;
 
 
 use Illuminate\Support\Facades\Route;
-
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::get('/', [MemberOrdinanceController::class, 'index'])->name('welcome');
+Route::post('/buscar', [MemberOrdinanceController::class, 'searchName'])->name('welcome.search');
 Route::get('/{id}/listar-portarias-servidor', [MemberOrdinanceController::class, 'listOrdinance'])->name('servidor.listOrdinance');
 
 //TODO: Listar todas as portarias de um determinado servidor
@@ -62,14 +63,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('servidores')->group(function () {
         Route::get('/', [ServidorController::class, 'index'])->name('servidores');
-        Route::get('/buscar',[ServidorController::class,'searchName'])->name('servidores.search');
+        Route::post('/buscar',[ServidorController::class,'searchName'])->name('servidores.search');
 
         Route::get('/adicionar', [ServidorController::class, 'create'])->name('servidores.create');
         Route::post('/adicionar', [ServidorController::class, 'store'])->name('servidores.store');
 
-        Route::get('/upload', [ServidorController::class, 'renderUpload'])->name('servidores.upload');
-        Route::post('/upload', [ServidorController::class, 'uploadServer'])->name('servidores.upload');
-
+        Route::any('/upload', [ServidorController::class, 'renderUpload'])->name('servidores.upload');
         Route::get('/{id}/detalhes', [ServidorController::class, 'details'])->name('servidores.details');
 
 
@@ -89,8 +88,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/adicionar', [GestorController::class, 'create'])->name('gestores.create');
         Route::post('/adicionar', [GestorController::class, 'store'])->name('gestores.store');
 
-        Route::get('/upload', [GestorController::class, 'renderUpload'])->name('gestores.upload');
-        Route::post('/upload', [GestorController::class, 'uploadServer'])->name('gestores.upload');
+        Route::any('/upload', [GestorController::class, 'renderUpload'])->name('gestores.upload');
+    
 
         Route::get('/{id}/editar', [GestorController::class, 'edit'])->name('gestores.edit');
         Route::put('/{id}', [GestorController::class, 'update'])->name('gestores.update');
@@ -127,6 +126,7 @@ Route::get('/dashboard', [ServidorController::class, 'dashboard'])->middleware([
 Route::get('/gestores', [GestorController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('gestores');
+Route::any('/ranking',[MemberOrdinanceController::class,'ranking'])->name('ranking.portarias')->middleware(['auth', 'verified']);
 
 //TODO: Listar todos os gestores cadastrados no sistema
 //TODO: Salvar novos gestores por meio de um formulário

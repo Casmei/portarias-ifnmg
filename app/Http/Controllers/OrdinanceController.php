@@ -45,9 +45,9 @@ class OrdinanceController extends Controller
      */
     public function searchName()
     {
-        Gate::authorize('acesso-restrito-servidor');
 
         $search = request('search');
+        $user = auth()->user();
 
         if($search){
             $portarias = Ordinance::where([
@@ -66,7 +66,7 @@ class OrdinanceController extends Controller
                 }
             }
 
-            return view('portaria.index', ['portarias' => $portarias,'search' => $search]);
+            return view('dashboard', ['portarias' => $portarias,'search' => $search, "user" => $user]);
         }else{
             $portarias = Ordinance::paginate(10);
             foreach ($portarias as $portaria) {
@@ -80,7 +80,7 @@ class OrdinanceController extends Controller
                     $portaria->status = false;
                 }
             }
-            return view('portaria.index', ['portarias' => $portarias]);
+            return view('dashboard', ['portarias' => $portarias, 'user' => $user]);
         }
     }
 
@@ -149,7 +149,8 @@ class OrdinanceController extends Controller
         }
 
         if ($request->hasFile('pdf_file')) {
-            $pdfPath = $request->file('pdf_file')->store('public/portarias');
+            $name = 'portaria-'.$ordinance->number.'-'.date('Y', strtotime($ordinance->start_date));
+            $pdfPath = $request->file('pdf_file')->storeAs('public/portarias', $name);
             $pdfUrl = Storage::url($pdfPath);
             $ordinance->pdf_url = $pdfUrl;
         }
@@ -230,8 +231,6 @@ class OrdinanceController extends Controller
 
     public function details(string $id)
     {
-        Gate::authorize('acesso-restrito-servidor');
-
         $portaria = Ordinance::where('id', $id)->first();
 
         $servidores = Ordinance::select('ordinances.*')

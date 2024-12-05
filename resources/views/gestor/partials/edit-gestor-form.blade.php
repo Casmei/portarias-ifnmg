@@ -19,12 +19,6 @@
         </div>
 
         <div>
-            <x-input-label for="cpf" :value="__('CPF')" />
-            <x-text-input id="cpf" name="cpf" type="text" :value="old('cpf', $gestor->cpf)" class="mt-1 block w-full" />
-            <x-input-error :messages="$errors->get('cpf')" class="mt-2" />
-        </div>
-
-        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $gestor->email)" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
