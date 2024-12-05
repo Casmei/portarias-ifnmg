@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Ordinance;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use DB;
+use App\Enums\UserRole;
 
 class MemberOrdinanceController extends Controller
 {
@@ -16,6 +18,23 @@ class MemberOrdinanceController extends Controller
         return view('welcome', [
             'portarias' => $portarias
         ]);
+    }
+    
+    /**
+     * Search Name the specified ordinance from storage.
+     */
+    public function searchName()
+    {
+        $search = request('search');
+        if ($search) {
+            $portarias = Ordinance::where('number', 'like', '%' . $search . '%')
+                      ->orWhere('description', 'like', '%' . $search . '%')
+                      ->paginate(10);
+            return view('welcome', ['portarias' => $portarias]);
+        } else {
+            $portarias = User::where('role_id', UserRole::SERVIDOR)->paginate(10);
+            return view('welcome', ['portarias' => $portarias]);
+        }
     }
     public function listOrdinance(string $id)
     {
@@ -52,6 +71,12 @@ class MemberOrdinanceController extends Controller
             'totalPorta' => $totalPorta,
             'totalPermanentes' => $totalPermanentes,
             'totalNaoPermanentes' => $totalNaoPermanentes
+        ]);
+    }
+    public function ranking(){
+        $portarias = Ordinance::all()->sortByDesc('created_at')->where('visibility', true);
+        return view('portaria.ranking', [
+            'portarias' => $portarias
         ]);
     }
 }
