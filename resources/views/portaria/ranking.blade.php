@@ -23,28 +23,9 @@
                                 </span>
                                 <input
                                     class="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-indigo-300 focus:ring-indigo-300 focus:ring-1 sm:text-sm"
-                                    placeholder="Buscar servidor pelo nome ou pela Descrição" type="text"
-                                    name="search" />
+                                    placeholder="Buscar servidor pelo nome" type="text" name="search" />
                             </label>
                         </form>
-                    </div>
-
-                    <div class="space-x-3 items-start flex justify-end">
-                        <a href="{{ route('servidores.upload') }}">
-                            <x-secondary-button class="w-30">
-                                <svg class='mr-2' xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                    fill="currentColor" class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z" />
-                                </svg>
-                                {{ __('Importar CSV') }}
-                                </x-primary-button>
-                        </a>
-                        <a href="{{ route('servidores.store') }}">
-                            <x-primary-button class="w-30">
-                                {{ __('Adicionar +') }}
-                            </x-primary-button>
-                        </a>
                     </div>
 
                 </div>
@@ -53,58 +34,32 @@
                         <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8 pb-10">
                             <div class="overflow-auto">
                                 @php $i = 1; @endphp
-                                @if (isset($portarias) && !$portarias->isEmpty())
+                                @if (isset($users) && !$users->isEmpty())
                                     <table class="w-full table-auto text-left text-sm font-light">
                                         <thead
                                             class="border-b font-semibold text-gray-800 leading-tight border-gray-200">
                                             <tr>
-                                                <th scope="col" class="px-6 py-4">POSIÇÃO</th>
-                                                <th scope="col" class="px-6 py-4">CÓDIGO</th>
-                                                <th scope="col" class="px-6 py-4">CAMPUS</th>
-                                                <th scope="col" class="px-6 py-4">DATA DE INÍCIO</th>
-                                                <th scope="col" class="px-6 py-4">DATA DE FIM</th>
-                                                <th scope="col" class="px-6 py-4">STATUS</th>
-                                                <th scope="col" class="px-6 py-4 text-center">VISIBILIDADE</th>
-                                                <th scope="col" class="px-6 py-4">AÇÕES</th>
+                                                <th scope="col" class="px-6 py-4 text-center">POSIÇÃO</th>
+                                                <th scope="col" class="px-6 py-4">SERVIDOR</th>
+                                                <th scope="col" class="px-6 py-4 text-center">QUANTIDADE DE
+                                                    PORTARIAS</th>
+                                                <th scope="col" class="px-6 py-4 text-center">DETALHES</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($portarias as $portaria)
+                                            @foreach ($users as $user)
                                                 <tr class="border-b border-gray-100">
-                                                    <td class="whitespace-nowrap px-10 py-4">
+                                                    <td class="whitespace-nowrap px-10 py-4 text-center	">
                                                         {{ $i }}
                                                     </td>
                                                     <td class="whitespace-nowrap px-6 py-4 font-medium">
-                                                        {{ $portaria->number }}</td>
-                                                    <td class="whitespace-nowrap px-6 py-4">{{ $portaria->campus }}
+                                                        {{ $user->name }}</td>
+                                                    <td class="whitespace-nowrap px-6 text-center py-4">
+                                                        {{ $user->ordinances_count }}
                                                     </td>
-                                                    <td class="whitespace-nowrap px-6 py-4">
-                                                        {{ \Carbon\Carbon::parse($portaria->start_date)->format('d/m/Y') }}
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-6 py-4">
-                                                        {{ \Carbon\Carbon::parse($portaria->end_date)->format('d/m/Y') ?? '-' }}
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-6 py-4">
-                                                        @if ($portaria->status)
-                                                            <span
-                                                                class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-green-900 dark:text-green-300">Ativa</span>
-                                                        @else
-                                                            <span
-                                                                class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-red-900 dark:text-red-300">Inativa</span>
-                                                        @endif
-                                                    </td>
-
-                                                    <td class="whitespace-nowrap px-6 py-4 text-center">
-                                                        @if ($portaria->visibility)
-                                                            <span
-                                                                class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-blue-900 dark:text-blue-300">Pública</span>
-                                                        @else
-                                                            <span
-                                                                class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-3 py-1 rounded dark:bg-gray-700 dark:text-gray-300">Privada</span>
-                                                        @endif
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-6 py-4 flex space-x-2">
-                                                        <a href="./portarias/{{ $portaria->id }}/detalhes"
+                                                    <td
+                                                        class="whitespace-nowrap px-6 py-4 flex justify-center items-center space-x-2">
+                                                        <a href="{{ route('servidores.details', $user->id) }}"
                                                             class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" fill="currentColor" class="bi bi-eye"
@@ -116,19 +71,6 @@
                                                             </svg>
                                                             <p>detalhes</p>
                                                         </a>
-                                                        <a href="{{ route('ordinance.download', ['id' => $portaria->id]) }}"
-                                                            class="flex space-x-1 border px-3 py-1  border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                height="16" fill="currentColor"
-                                                                class="bi bi-download" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z" />
-                                                                <path
-                                                                    d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z" />
-                                                            </svg>
-                                                            <p>Baixar</p>
-                                                        </a>
-                                                        </a>
                                                     </td>
                                                 </tr>
                                                 @php $i++; @endphp
@@ -136,7 +78,7 @@
                                         </tbody>
                                     </table>
                                 @else
-                                    <p class="text-center">Não há nenhuma portaria cadastrada.</p>
+                                    <p class="text-center">Não há nenhum usuario cadastrado.</p>
                                 @endif
                             </div>
                         </div>

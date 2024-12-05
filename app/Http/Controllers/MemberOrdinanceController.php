@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use DB;
 use App\Enums\UserRole;
+use App\Models\MemberOrdinance;
 
 class MemberOrdinanceController extends Controller
 {
@@ -73,16 +74,22 @@ class MemberOrdinanceController extends Controller
             'totalNaoPermanentes' => $totalNaoPermanentes
         ]);
     }
-    public function ranking(){
-        if (request('search')) {
-            $search = request('search');
-            $portarias = Ordinance::where('number', 'like', '%' . $search . '%')
-                      ->orWhere('description', 'like', '%' . $search . '%')
-                      ->paginate(10);
-            return view('portaria.ranking', ['portarias' => $portarias]);
+    public function ranking()
+    {
+        $search = request('search');
+    
+        if ($search) {
+            $users = User::withCount('ordinances') ->when($search, function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%'); 
+        })
+        ->orderBy('ordinances_count', 'desc') 
+        ->get();
         } else {
-            $portarias = Ordinance::all()->sortByDesc('created_at')->where('visibility', true);
-            return view('portaria.ranking', ['portarias' => $portarias]);
+            $users = User::withCount('ordinances')
+                         ->orderBy('ordinances_count', 'desc') 
+                         ->get();
         }
+    
+        return view('portaria.ranking', ['users' => $users]);
     }
 }
